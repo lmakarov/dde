@@ -171,7 +171,7 @@ For Mac and Windows see (boot2docker-vagrant/Vagrantfile)[https://github.com/bli
 
 Drush is available inside the **web** container. To run it first open bash inside **web**:
 
-    docker exec -it $(fig ps -q web) bash
+    docker exec -it $(docker-compose ps -q web) bash
 
 A more convenient way of running Drush is via the [docker-drush](.docker/bin/docker-drush) wrapper:
 
