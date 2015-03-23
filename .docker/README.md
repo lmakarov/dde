@@ -212,8 +212,8 @@ The following configuration files are mounted inside the respective containers a
 <a name="advanced"></a>
 ## Advanced use cases
 
-- [DB sandbox mode](.docker/docs/db-sandbox.md)
-- [Public access](.docker/docs/public-access.md)
+- [DB sandbox mode](docs/db-sandbox.md)
+- [Public access](docs/public-access.md)
 
 ## License
 
