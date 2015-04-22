@@ -493,7 +493,7 @@ _confirm ()
 # Reset containers (stop, remove, up)
 reset ()
 {
-	_confirm "[!] This will delete all project containers including the DB one.";
+	_confirm "[!] This will delete all project containers including the DB one. You will need to re-import DB.";
 
 	echo "Checking files..."
 	if is_yml_absent ; then return 2; fi
