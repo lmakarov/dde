@@ -97,5 +97,5 @@ cli:
 #   ports:
 #     - "8983:8983"
 #   volumes:
-#     - "./.docker/etc/solr:/var/lib/solr/conf"
+#     - "./.docker/etc/solr/3.x:/var/lib/solr/conf"
 #     - /var/lib/solr/data
