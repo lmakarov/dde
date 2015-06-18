@@ -89,3 +89,13 @@ cli:
 #     - web
 #   ports:
 #     - "4444:4444"
+
+# To use Solr, uncomment the service definition below and link the web service to the solr service.
+# solr:
+#   hostname: solr
+#   image: blinkreaction/drupal-solr:3.x
+#   ports:
+#     - "8983:8983"
+#   volumes:
+#     - "./.docker/etc/solr:/var/lib/solr/conf"
+#     - /var/lib/solr/data
