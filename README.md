@@ -6,7 +6,7 @@ Docker and Docker Compose based environment for Drupal.
 <a name="requirements"></a>
 ## Requirements
 
-Docker is natively supported only on Linux.  
+Docker is natively supported only on Linux.
 Mac and Windows users will need a tiny linux VM layer - [Boot2docker Vagrant Box](https://github.com/blinkreaction/boot2docker-vagrant)
 
 ### Mac
@@ -41,13 +41,13 @@ Mac and Windows users will need a tiny linux VM layer - [Boot2docker Vagrant Box
 <a name="setup"></a>
 ## Setup
 
-Drude initial setup is done once per project (e.g. by a team lead).  
-Once installed into the project repo, Drude can be used by anyone on the team.  
+Drude initial setup is done once per project (e.g. by a team lead).
+Once installed into the project repo, Drude can be used by anyone on the team.
 To use Drude each team member will need to meet the [requirements](#requirements) outlined above.
 
 `docker-compose.yml` file and `.docker` folder are good indicators of Drude's presence in the project repo.
 
-**If this is the first time Drude is being installed into the project, follow the instructions below.**  
+**If this is the first time Drude is being installed into the project, follow the instructions below.**
 
 The installation process is slightly different based on the OS.
 
@@ -58,9 +58,9 @@ The installation process is slightly different based on the OS.
  3. cd `</path/to/project>` and run:
 
     ```
-    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/scripts/install-drude.sh)
+    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/develop/scripts/install-drude.sh)
     ```
-    
+
  4. Start containers with `dsh up`
 
 ### Windows
@@ -70,11 +70,11 @@ The installation process is slightly different based on the OS.
  3. Open Git Bash shell and cd into `</path/to/project>`, then run:
 
     ```
-    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/scripts/install-drude.sh)
+    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/develop/scripts/install-drude.sh)
     ```
-    
+
  4. Start and login into vagrant, cd into `</path/to/project>`:
- 
+
     ```
     vagrant up
     vagrant ssh
@@ -90,7 +90,7 @@ The installation process is slightly different based on the OS.
  3. cd `</path/to/project>` and run:
 
     ```
-    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/scripts/install-drude.sh)
+    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/develop/scripts/install-drude.sh)
     ```
 
  4. Start containers with `dsh up`
@@ -100,7 +100,7 @@ The installation process is slightly different based on the OS.
 
 To update Drude run the following from the `</path/to/project>` folder:
 
-    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/scripts/install-drude.sh)
+    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/develop/scripts/install-drude.sh)
 
 Review the changes, revert any local overrides that were reset and commit into your project git repo.
 
@@ -136,7 +136,7 @@ It runs on Mac/Linux directly. On Windows `dsh` runs inside the boot2docker VM.
 
 ### Installation
 
-    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/scripts/install-dsh.sh)
+    bash <(curl -s https://raw.githubusercontent.com/blinkreaction/drude/develop/scripts/install-dsh.sh)
 
 This will install a local dsh wrapper into `/usr/local/bin/dsh`.
 The actual dsh script resides in each project individually (in `.docker/bin/dsh`) and is installed into the project along with Drude. The wrapper makes it possible to use `dsh` from anywhere in the project tree.
