@@ -29,7 +29,7 @@ is_tty ()
 # {
 # 	# Skip checks if not a tty
 # 	if ! is_tty ; then return 0; fi
-	
+
 # 	while true; do
 # 		read -p "$1 [y/n]: " answer
 # 		case $answer in
@@ -43,7 +43,7 @@ is_tty ()
 # 				echo 'Please answer yes or no.'
 # 		esac
 # 	done
-}
+# }
 
 # Install/update dsh tool wrapper
 # dsh_install_script=$(curl -fsS "$DRUDE_REPO_RAW/install-dsh.sh")
