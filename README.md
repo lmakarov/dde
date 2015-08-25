@@ -1,21 +1,21 @@
 # Drude (**Dru**pal **D**ocker **E**nvironment)
 Docker and Docker Compose based environment for Drupal.
 
-[![Circle CI](https://circleci.com/gh/blinkreaction/drude.svg?style=shield)](https://circleci.com/gh/blinkreaction/drude)
+[![Circle CI](https://circleci.com/gh/frederickjh/drude.svg?style=shield)](https://circleci.com/gh/frederickjh/drude)
 
 <a name="requirements"></a>
 ## Requirements
 
 Docker is natively supported only on Linux.  
-Mac and Windows users will need a tiny linux VM layer - [Boot2docker Vagrant Box](https://github.com/blinkreaction/boot2docker-vagrant)
+Mac and Windows users will need a tiny linux VM layer - [Boot2docker Vagrant Box](https://github.com/frederickjh/boot2docker-vagrant)
 
 ### Mac and Windows
 
-1. Get the [Boot2docker Vagrant Box](https://github.com/blinkreaction/boot2docker-vagrant) up and running.
+1. Get the [Boot2docker Vagrant Box](https://github.com/frederickjh/boot2docker-vagrant) up and running.
 2. Install [dsh](#dsh) tool (Drude Shell) wrapper
 
     ```
-    curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/install-dsh.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-dsh.sh | bash
     ```
 
 ### Linux
@@ -24,7 +24,7 @@ Mac and Windows users will need a tiny linux VM layer - [Boot2docker Vagrant Box
 3. Install [dsh](#dsh) tool (Drude Shell) wrapper
 
     ```
-    curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/install-dsh.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-dsh.sh | bash
     ```
 
 <a name="setup"></a>
@@ -47,7 +47,7 @@ The installation process is slightly different based on the OS.
  3. cd `</path/to/project>` and run:
 
     ```
-    curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/install-drude.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-drude.sh | bash
     ```
     
  4. Start containers with `dsh up`
@@ -59,7 +59,7 @@ The installation process is slightly different based on the OS.
  3. Open Git Bash shell and cd into `</path/to/project>`, then run:
 
     ```
-    curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/install-drude.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-drude.sh | bash
     ```
     
  4. Start and login into vagrant, cd into `</path/to/project>`:
@@ -79,7 +79,7 @@ The installation process is slightly different based on the OS.
  3. cd `</path/to/project>` and run:
 
     ```
-    curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/install-drude.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-drude.sh | bash
     ```
 
  4. Start containers with `dsh up`
@@ -89,7 +89,7 @@ The installation process is slightly different based on the OS.
 
 To update Drude run the following from the `</path/to/project>` folder:
 
-    curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/install-drude.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-drude.sh | bash
 
 Review the changes, revert any local overrides that were reset and commit into your project git repo.
 
@@ -125,7 +125,7 @@ It runs on Mac/Linux directly. On Windows `dsh` runs inside the boot2docker VM.
 
 ### Installation
 
-    curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/install-dsh.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-dsh.sh | bash
 
 This will install a local dsh wrapper into `/usr/local/bin/dsh`.
 The actual dsh script resides in each project individually (in `.docker/bin/dsh`) and is installed into the project along with Drude. The wrapper makes it possible to use `dsh` from anywhere in the project tree.

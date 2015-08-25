@@ -7,8 +7,8 @@ yellow='\033[1;33m'
 NC='\033[0m'
 
 # Drude repo
-DRUDE_REPO='https://github.com/blinkreaction/drude.git'
-DRUDE_REPO_RAW='https://raw.githubusercontent.com/blinkreaction/drude/master'
+DRUDE_REPO='https://github.com/frederickjh/drude.git'
+DRUDE_REPO_RAW='https://raw.githubusercontent.com/frederickjh/drude/master'
 
 # Determine if we have sudo
 SUDO='sudo'

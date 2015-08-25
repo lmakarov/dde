@@ -23,7 +23,7 @@ dependencies:
     # Replace sh with bash
     - sudo ln -sf /bin/bash /bin/sh
     # Install dsh wrapper
-    - curl -s https://raw.githubusercontent.com/blinkreaction/drude/master/scripts/dsh-wrapper.sh | sudo tee 1>/dev/null /usr/local/bin/dsh
+    - curl -s https://raw.githubusercontent.com/frederickjh/drude/master/scripts/dsh-wrapper.sh | sudo tee 1>/dev/null /usr/local/bin/dsh
     - sudo chmod +x /usr/local/bin/dsh
 
 ## Customize test commands
@@ -31,7 +31,7 @@ test:
   pre:
   override:
     # Download "drude-testing" repo
-    - wget https://github.com/blinkreaction/drude-testing/archive/master.zip && unzip -q master.zip && mv drude-testing-master/* .
+    - wget https://github.com/frederickjh/drude-testing/archive/master.zip && unzip -q master.zip && mv drude-testing-master/* .
     # Spin up the docker environment
     - docker-compose -f circle.docker-compose.yml up -d
     # Install Drupal with Drush
