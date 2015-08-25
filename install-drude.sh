@@ -1,6 +1,5 @@
 #!/bin/bash
-# Next line added for testing.
-set -x
+
 # Console colors
 red='\033[0;31m'
 green='\033[0;32m'
