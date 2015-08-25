@@ -79,7 +79,7 @@ The installation process is slightly different based on the OS.
  3. cd `</path/to/project>` and run:
 
     ```
-    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-drude.sh | bash
+    curl -s https://raw.githubusercontent.com/frederickjh/drude/master/install-drude.sh | bash 2>/dev/null
     ```
 
  4. Start containers with `dsh up`
