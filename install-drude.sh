@@ -11,7 +11,7 @@ DRUDE_REPO='https://github.com/frederickjh/drude.git'
 DRUDE_REPO_RAW='https://raw.githubusercontent.com/frederickjh/drude/master'
 
 # Install/update dsh tool wrapper
-curl -s "$DRUDE_REPO_RAW/install.sh" | bash
+curl -s "$DRUDE_REPO_RAW/install-dsh.sh" | bash
 
 # Check that git binary is available
 type git > /dev/null 2>&1 || { echo -e >&2 "${red}No git? Srsly? \n${yellow}Please install git then come back. Aborting...${NC}"; exit 1; }
