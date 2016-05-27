@@ -28,8 +28,8 @@ Initial configuration is done once per project (e.g. by a team lead) and committ
 
 This is optional, but highly recommended.
 
-Site provisioning can be automated via a shell script.  
-`dsh init` will call `.drude/scripts/drude-init.sh`, where you can put project specific initialization tasks, e.g.:
+Site provisioning can be automated via a [custom command](custom-commands.md).  
+E.g. `dsh init` will call `.drude/commands/init`, where you can put project specific initialization tasks like:
 
 - initialize local settings files (Docker Compose, Drupal, Behat, etc.)
 - initialize Drude docker stack
