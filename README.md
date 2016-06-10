@@ -23,10 +23,6 @@ Please review [system requirements](/docs/system-requirements.md) before proceed
 
     This is done **one time per project** and should be performed by the project TL.
 
-3. [Initialize a Drude powered project](/docs/drude-project-init.md)
-
-    Follow these instructions to initiallize a Drude powered project.
-
 
 <a name="updates"></a>
 ## Updates
@@ -42,6 +38,12 @@ On Mac and Windows only (skip for Linux) also run:
 
 ```
 dsh update boot2docker
+```
+
+Finally, you will probably need to re-initialize your environment with:
+
+```
+dsh init
 ```
 
 
@@ -69,26 +71,32 @@ dsh bash
 
 Tools available inside the **cli** container:
 
-- php-cli, composer, drush[6,7,8], drupal console, phpcs
+- php-cli, composer, drush[6,7,8], drupal console, phpcs, phpcbf
 - ruby, bundler
-- node, nvm, npm, bower, grunt
-- git, wget, zip, mysql-client
-- python
+- node, nvm, npm
+- imagemagick
+- python, git, mc, mysql-client and [more](https://github.com/blinkreaction/docker-drupal-cli)
 
 
 <a name="instructions"></a>
 ## Instructions and tutorials
 
+### Advanced configuration
 - [Drupal settings](/docs/drupal-settings.md)
-- [Running multiple projects](/docs/multiple-projects.md)
 - [Overriding default PHP/MySQL/etc. settings](/docs/settings.md)
+- [Running multiple projects](/docs/multiple-projects.md)
 - [Public access](/docs/public-access.md)
 - [DB sandbox mode](/docs/db-sandbox.md)
-- [Using Behat](/docs/behat.md)
-- [Zero-configuration Debugging with Xdebug and PhpStorm](/docs/xdebug.md)
 - [MySQL DB access for external tools](/docs/db-access.md)
-- [Sending and capturing email](/docs/mail.md)
+- [Debugging with Xdebug and PhpStorm](/docs/xdebug.md)
+
+### Third party utililies
+- [Using Behat](/docs/behat.md)
+- [Sending and capturing e-mail](/docs/mail.md)
 - [Enabling Varnish support](/docs/varnish.md)
+- [Enabling Apache Solr support](/docs/apache-solr.md)
+- [Using PHP Code Sniffer (phpcs, phpcbf)](/docs/phpcs.md)
+- [Extending dsh with custom commands](/docs/custom-commands.md)
 
 <a name="troubleshooting"></a>
 ## Troubleshooting
@@ -100,7 +108,7 @@ See [Troubleshooting](/docs/troubleshooting.md) section of the docs.
 
 The MIT License (MIT)
 
-Copyright (c) 2016 BlinkReaction
+Copyright © 2016 Blink Reaction
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
