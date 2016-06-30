@@ -58,5 +58,8 @@ dsh_reset() {
   [[ ${lines[4]} =~ "Removing druded7testing" ]]
   [[ ${lines[5]} =~ "Removing druded7testing" ]]
   [[ ${lines[6]} =~ "Removing druded7testing" ]]
+
+  # Rerun containers after removing.
+  dsh up > null
 }
 
