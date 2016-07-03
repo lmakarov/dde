@@ -19,12 +19,8 @@ load dsh_script
   [[ ${lines[6]} =~ "Removing druded7testing" ]]
 }
 
-dsh_reset() {
-  dsh reset "$1"
-}
-
 @test "Checking output of dsh reset cli" {
-  run dsh_reset cli
+  run dsh reset cli
 
   [ $status -eq 0 ]
   [[ ${lines[0]} =~ "Killing druded7testing" ]]
@@ -32,7 +28,7 @@ dsh_reset() {
 }
 
 @test "Checking output of dsh reset db" {
-  run dsh_reset db
+  run dsh reset db
 
   [ $status -eq 0 ]
   [[ ${lines[0]} =~ "Killing druded7testing" ]]
@@ -40,7 +36,7 @@ dsh_reset() {
 }
 
 @test "Checking output of dsh reset web" {
-  run dsh_reset web
+  run dsh reset web
 
   [ $status -eq 0 ]
   [[ ${lines[0]} =~ "Killing druded7testing" ]]
@@ -60,6 +56,6 @@ dsh_reset() {
   [[ ${lines[6]} =~ "Removing druded7testing" ]]
 
   # Rerun containers after removing.
-  dsh up > null
+  dsh up > /dev/null
 }
 

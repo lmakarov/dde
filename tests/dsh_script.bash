@@ -2,5 +2,5 @@
 
 # Include dsh script for usign internal dsh function.
 setup() {
-  . /usr/local/bin/dsh > null
+  . /usr/local/bin/dsh > /dev/null
 }

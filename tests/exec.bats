@@ -20,14 +20,14 @@ load dsh_script
   [[ $output =~ "3.19.0-56-generic" ]]
 }
 
-@test "Checking dsh -run function - pwd test" {
+@test "Checking dsh _run function - pwd test" {
   run _run pwd
 
   [ $status -eq 0 ]
   [[ $output =~ "/var/www" ]]
 }
 
-@test "Checking dsh -run function - uname test" {
+@test "Checking dsh _run function - uname test" {
   run _run uname -r
 
   [ $status -eq 0 ]
