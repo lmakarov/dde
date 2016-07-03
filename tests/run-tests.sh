@@ -24,3 +24,5 @@ echo "Test command: status"
 bats ../drude/tests/status.bats
 echo "Test command: update"
 bats ../drude/tests/update.bats
+echo "Test dsh helper functions"
+bats ../drude/tests/helper_functions.bats
