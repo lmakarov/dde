@@ -269,3 +269,148 @@ not_true_if_failed() {
   [ $status -eq 0 ]
   [ "$output" = $compose_output ]
 }
+
+@test "Checking is_linux function." {
+  # Debug section.
+  # @todo add test case checking that win and linux can't be true
+
+  # Check if OS is Linux
+  run bash -c 'uname | grep "Linux"'
+  linux=$output
+  is_linux=$([[ "$linux" = 'Linux' ]] && echo 0 || echo 1)
+
+  # Check if OS is Mac
+  run bash -c 'uname | grep "Darwin"'
+  mac=$output
+  is_mac=$([[ "$mac" = 'Darwin' ]] && echo 0 || echo 1)
+
+  # Check if OS is Win
+  run bash -c 'uname | grep "CYGWIN_NT"'
+  is_win=$([[ "$win" = 'CYGWIN_NT' ]] && echo 0 || echo 1)
+
+  # Debug section
+  echo "==============================================================="
+  echo "Is linux: $is_linux"
+  echo "Is mac: $is_mac"
+  echo "Is win: $is_win"
+  echo "==============================================================="
+
+  # Run test itself
+  run is_linux
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq $is_linux ]
+
+}
+
+@test "Checking is_windows function." {
+  # Debug section.
+  # @todo add test case checking that win and linux can't be true
+
+  # Check if OS is Linux
+  run bash -c 'uname | grep "Linux"'
+  linux=$output
+  is_linux=$([[ "$linux" = 'Linux' ]] && echo 0 || echo 1)
+
+  # Check if OS is Mac
+  run bash -c 'uname | grep "Darwin"'
+  mac=$output
+  is_mac=$([[ "$mac" = 'Darwin' ]] && echo 0 || echo 1)
+
+  # Check if OS is Win
+  run bash -c 'uname | grep "CYGWIN_NT"'
+  is_win=$([[ "$win" = 'CYGWIN_NT' ]] && echo 0 || echo 1)
+
+  # Debug section
+  echo "==============================================================="
+  echo "Is linux: $is_linux"
+  echo "Is mac: $is_mac"
+  echo "Is win: $is_win"
+  echo "==============================================================="
+
+  # Run test itself
+  run is_windows
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq $is_win ]
+
+}
+
+@test "Checking is_mac function." {
+  # Debug section.
+  # @todo add test case checking that win and linux can't be true
+
+  # Check if OS is Linux
+  run bash -c 'uname | grep "Linux"'
+  linux=$output
+  is_linux=$([[ "$linux" = 'Linux' ]] && echo 0 || echo 1)
+
+  # Check if OS is Mac
+  run bash -c 'uname | grep "Darwin"'
+  mac=$output
+  is_mac=$([[ "$mac" = 'Darwin' ]] && echo 0 || echo 1)
+
+  # Check if OS is Win
+  run bash -c 'uname | grep "CYGWIN_NT"'
+  is_win=$([[ "$win" = 'CYGWIN_NT' ]] && echo 0 || echo 1)
+
+  # Debug section
+  echo "==============================================================="
+  echo "Is linux: $is_linux"
+  echo "Is mac: $is_mac"
+  echo "Is win: $is_win"
+  echo "==============================================================="
+
+  # Run test itself
+  run is_mac
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq $is_mac ]
+
+}
+
+@test "Checking is_boot2docker function." {
+  # Debug section.
+  # @todo add test case checking that win and linux can't be true
+
+  # Check if boot2docker console
+  run bash -c 'uname -a|grep "boot2docker"'
+  boot2socker=$output
+  is_boot2socker=$([[ ! "$boot2docker" = '' ]] && echo 0 || echo 1)
+
+  # Debug section
+  echo "==============================================================="
+  echo "Is boot2socker: $is_boot2socker"
+  echo "==============================================================="
+
+  # Run test itself
+  run is_boot2docker
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq $is_boot2socker ]
+
+}
