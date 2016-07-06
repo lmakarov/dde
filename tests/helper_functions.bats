@@ -504,3 +504,52 @@ not_true_if_failed() {
   [ $status -eq 1 ]
 }
 
+#TODO: add all OS compatible test version, using skip for now.
+@test "Checking is_docker_runnning function. Case#1: Linux docker running" {
+  # Run section
+  if [[ $(is_linux) -ne 0 ]]; then
+    skip "This test is available only for Linux versions."
+  fi
+  # start docker service if it's already running it will proceed.
+  sudo service docker start
+  run is_docker_running
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+}
+
+@test "Checking is_docker_runnning function. Case#1: Linux docker not running" {
+  # Run section
+  if [[ $(is_linux) -ne 0 ]]; then
+    skip "This test is available only for Linux versions."
+  fi
+  # Stop containers
+  run stop
+  # Stop Docker service
+  sudo service docker stop
+  sleep 1
+  # Run check
+  run is_docker_running
+  sleep 1
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -ne 0 ]
+
+  # Start docker
+  sudo service docker start
+  # Start containers
+  run start
+  # Always output status and output if failed
+}
+
+
