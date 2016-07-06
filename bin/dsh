@@ -26,6 +26,7 @@ DRUDE_COMMANDS_PATH=".drude/commands"
 # Network settings
 DRUDE_IP="192.168.10.10"
 DRUDE_SUBNET="192.168.10.1/24"
+DRUDE_SUBNET_RHEL="192.168.10.1"
 DRUDE_DEFAULT_DNS="8.8.8.8"
 DRUDE_VBOX_DNS="10.0.2.3"
 
@@ -939,11 +940,11 @@ DEVICE=lo:drude
 NAME=lo:drude
 NM_CONTROLLED=yes
 TYPE=Loopback
-IPADDR=192.168.10.1
+IPADDR=$DRUDE_SUBNET_RHEL
 NETMASK=255.255.255.0
 ONBOOT=yes
 PEERDNS=yes
-DNS=192.168.10.10
+DNS=$DRUDE_IP
 EOF
 		sudo chmod 0655 $interface
 		sudo ifdown lo:drude && sudo ifup lo:drude
@@ -962,14 +963,9 @@ is_redhat()
 # Install Docker and setup Drude on Ubuntu 14.04+
 install_linux ()
 {
-	if [ -r /etc/os-release ]; then
-		lsb_dist="$(. /etc/os-release && echo "$DISTRIB_ID")"
-		lsb_release="$(. /etc/os-release && echo "$DISTRIB_RELEASE")"
-	fi
-
-	if [ -r /etc/redhat-release ]; then
-		lsb_dist="$(. /etc/os-release && echo "$DISTRIB_ID")"
-		lsb_release="$(. /etc/os-release && echo "$DISTRIB_RELEASE")"
+	if [ -r /etc/lsb-release ]; then
+		lsb_dist="$(. /etc/lsb-release && echo "$DISTRIB_ID")"
+		lsb_release="$(. /etc/lsb-release && echo "$DISTRIB_RELEASE")"
 	fi
 
 	if [[ $lsb_dist == 'Ubuntu' && $(ver_to_int $lsb_release) < $(ver_to_int '14.04') ]]; then
