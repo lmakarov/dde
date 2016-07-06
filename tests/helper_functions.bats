@@ -246,3 +246,26 @@ not_true_if_failed() {
   [ $status -eq 0 ]
   [ "$output" = $compose_output ]
 }
+
+@test "Checking get_container_id function. Case#2: web" {
+  # Run section
+  run get_container_id 'web'
+
+  # Debug section
+  echo "==============================================================="
+  echo "Docker compose output: "
+  compose_output=$(docker-compose ps -q web | tr -d '\r')
+  echo $compose_output
+  echo "==============================================================="
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  # Check results section
+  [ $status -eq 0 ]
+  [ "$output" = $compose_output ]
+}
