@@ -15,6 +15,13 @@ load dsh_script
   dsh ssh-add bats_rsa
 }
 
+@test "Checking dsh ssh-add: key doesn't exist" {
+  run dsh ssh-add doesnt_exist_rsa
+
+  [ $status -eq 1 ]
+  [[ $output =~ "SSH key file not found:" ]]
+}
+
 @test "Checking dsh ssh-add -l (one key)" {
   run dsh ssh-add -l
 
