@@ -444,3 +444,63 @@ not_true_if_failed() {
 
   [ $status -eq 0 ]
 }
+
+@test "Checking is_binary_found function. Case#1: existing binary" {
+  # Run section
+  run is_binary_found 'docker'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+
+}
+
+@test "Checking is_binary_found function. Case#2: fake binary" {
+  # Run section
+  run is_binary_found 'fake_binary'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 1 ]
+
+}
+
+@test "Checking check_binary_found function. Case#1: existing binary" {
+  # Run section
+  run check_binary_found 'docker'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+
+}
+
+@test "Checking check_binary_found function. Case#2: fake binary" {
+  # Run section
+  run check_binary_found 'fake_binary'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 1 ]
+}
+
