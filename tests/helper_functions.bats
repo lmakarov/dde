@@ -134,3 +134,45 @@ not_true_if_failed() {
   [ $status -eq 0 ]
   [ "$output" = "Abc-123" ]
 }
+
+@test "Checking get_mysql_connect function. Case#1 Outside of docroot" {
+  # Run section
+  run get_mysql_connect
+
+  # Debug section
+  echo "==============================================================="
+  echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
+  echo "==============================================================="
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+ Current checked value: ${lines[8]}"
+  echo "+=============================================================="
+
+  # Check results section
+  [ $status -eq 0 ]
+  [ "${lines[8]}" = "#1 [internal function]: drush_sql_connect()" ]
+}
+
+@test "Checking get_mysql_connect function. Case#1 Inside of docroot" {
+  # Run section
+  cd docroot/sites
+  run get_mysql_connect
+
+  # Debug section
+  echo "==============================================================="
+  echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
+  echo "==============================================================="
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  # Check results section
+  [ $status -eq 0 ]
+  [ "$output" = "mysql --user=drupal --password=123 --database=drupal --host=172.17.0.5" ]
+}
