@@ -414,3 +414,33 @@ not_true_if_failed() {
   [ $status -eq $is_boot2socker ]
 
 }
+
+@test "Checking is_docker_beta function. Case#1 Not beta version" {
+  DOCKER_BETA=0
+  # Run section
+  run is_docker_beta
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 1 ]
+}
+
+@test "Checking is_docker_beta function. Case#2 Beta version" {
+  DOCKER_BETA=1
+  # Run section
+  run is_docker_beta
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+}
