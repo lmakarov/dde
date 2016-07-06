@@ -66,7 +66,7 @@ not_true_if_failed() {
  [ "$output" = "$(pwd)/docroot/sites" ]
 }
 
-@test "Checking get_current_relative_path function. Case#1 Inside docroot folder condition" {
+@test "Checking get_current_relative_path function. Case#1: Inside docroot folder condition" {
   # Run section
   cd docroot/sites/all
   run get_current_relative_path
@@ -90,7 +90,7 @@ not_true_if_failed() {
   [ "$output" = "docroot/sites/all" ]
 }
 
-@test "Checking get_current_relative_path function. Case#2 Outside docroot folder condition" {
+@test "Checking get_current_relative_path function. Case#2: Outside docroot folder condition" {
   # Run section
   run get_current_relative_path
 
@@ -113,7 +113,7 @@ not_true_if_failed() {
   [ "$output" = "" ]
 }
 
-@test "Checking clean_string function" {
+@test "Checking clean_string function." {
   # Run section
   local string="Abc-123/"
   run clean_string $string
@@ -135,7 +135,7 @@ not_true_if_failed() {
   [ "$output" = "Abc-123" ]
 }
 
-@test "Checking get_mysql_connect function. Case#1 Outside of docroot" {
+@test "Checking get_mysql_connect function. Case#1: Outside of docroot" {
   # Run section
   run get_mysql_connect
 
@@ -156,7 +156,7 @@ not_true_if_failed() {
   [ "${lines[8]}" = "#1 [internal function]: drush_sql_connect()" ]
 }
 
-@test "Checking get_mysql_connect function. Case#1 Inside of docroot" {
+@test "Checking get_mysql_connect function. Case#2: Inside of docroot" {
   # Run section
   cd docroot/sites
   run get_mysql_connect
@@ -177,7 +177,7 @@ not_true_if_failed() {
   [ "$output" = "mysql --user=drupal --password=123 --database=drupal --host=172.17.0.5" ]
 }
 
-@test "Checking docker_compose function. Case#1 Empty call" {
+@test "Checking docker_compose function. Case#1: Call without specified command" {
   # Run section
   run docker_compose
 
@@ -201,7 +201,7 @@ not_true_if_failed() {
   [ "${lines[0]}" = "Define and run multi-container applications with Docker." ]
 }
 
-@test "Checking docker_compose function. Case#2 Call with specified command" {
+@test "Checking docker_compose function. Case#2: Call with specified command" {
   # Run section
   run docker_compose version
 
@@ -222,4 +222,27 @@ not_true_if_failed() {
 
   # Check results section
   [ $status -eq 0 ]
+}
+
+@test "Checking get_container_id function. Case#1: cli" {
+  # Run section
+  run get_container_id 'cli'
+
+  # Debug section
+  echo "==============================================================="
+  echo "Docker compose output: "
+  compose_output=$(docker-compose ps -q cli | tr -d '\r')
+  echo $compose_output
+  echo "==============================================================="
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  # Check results section
+  [ $status -eq 0 ]
+  [ "$output" = $compose_output ]
 }
