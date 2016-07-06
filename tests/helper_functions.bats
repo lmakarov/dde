@@ -537,19 +537,81 @@ not_true_if_failed() {
   # Run check
   run is_docker_running
   sleep 1
+  # Always output status and output if failed
   echo "+=============================================================="
   echo "+ Current status: $status"
   echo "+ Current output: $output"
   echo "+ Current lines: $lines"
   echo "+=============================================================="
 
-  [ $status -ne 0 ]
+  docker_state=$status
 
   # Start docker
   sudo service docker start
   # Start containers
   run start
-  # Always output status and output if failed
+
+  [ $docker_state -ne 0 ]
 }
 
+@test "Checking check_yml function. Case#1 Linux docker-compose exists." {
+  if [[ $(is_linux) -ne 0 || $(is_docker_beta) -ne 0 ]]; then
+	  # Run tests
+	  run check_yml
 
+	  echo "+=============================================================="
+	  echo "+ Current status: $status"
+	  echo "+ Current output: $output"
+	  echo "+ Current lines: $lines"
+	  echo "+=============================================================="
+
+	  [ $status -eq 0 ]
+  fi
+}
+
+@test "Checking check_yml function. Case#1 Linux docker-compose not exists." {
+  if [[ $(is_linux) -ne 0 ]]; then
+	cd ../drude
+	# Run tests
+	run check_yml
+
+	echo "+=============================================================="
+	echo "+ Current status: $status"
+	echo "+ Current output: $output"
+	echo "+ Current lines: $lines"
+	echo "+=============================================================="
+
+	  [ $status -eq 1 ]
+  fi
+}
+
+@test "Checking check_yml function. Case#1 Win and Mac docker-compose and vagrant exists." {
+  if [[ $(is_windows) -ne 0 || $(is_mac) -ne 0 ]]; then
+	# Run tests
+	run check_yml
+
+	echo "+=============================================================="
+	echo "+ Current status: $status"
+	echo "+ Current output: $output"
+	echo "+ Current lines: $lines"
+	echo "+=============================================================="
+
+	  [ $status -eq 0 ]
+  fi
+}
+
+@test "Checking check_yml function. Case#1 Win and Mac docker-compose and vagrant not exists." {
+  if [[ $(is_windows) -ne 0 || $(is_mac) -ne 0 ]]; then
+	# Run tests
+	cd ../drude
+	run check_yml
+
+	echo "+=============================================================="
+	echo "+ Current status: $status"
+	echo "+ Current output: $output"
+	echo "+ Current lines: $lines"
+	echo "+=============================================================="
+
+	[ $status -eq 1 ]
+  fi
+}
