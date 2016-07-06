@@ -66,7 +66,7 @@ not_true_if_failed() {
  [ "$output" = "$(pwd)/docroot/sites" ]
 }
 
-@test "Checking get_current_relative_path function. #1 Inside docroot folder condition" {
+@test "Checking get_current_relative_path function. Case#1 Inside docroot folder condition" {
   # Run section
   cd docroot/sites/all
   run get_current_relative_path
@@ -90,7 +90,7 @@ not_true_if_failed() {
   [ "$output" = "docroot/sites/all" ]
 }
 
-@test "Checking get_current_relative_path function. #2 Outside docroot folder condition" {
+@test "Checking get_current_relative_path function. Case#2 Outside docroot folder condition" {
   # Run section
   run get_current_relative_path
 
@@ -175,4 +175,51 @@ not_true_if_failed() {
   # Check results section
   [ $status -eq 0 ]
   [ "$output" = "mysql --user=drupal --password=123 --database=drupal --host=172.17.0.5" ]
+}
+
+@test "Checking docker_compose function. Case#1 Empty call" {
+  # Run section
+  run docker_compose
+
+  # Debug section
+  cwd=$(pwd)
+  echo "+=============================================================="
+  echo "+ Current path: $cwd"
+  cd $(get_yml_path)
+  echo "+ Yml path directory: $(pwd)"
+
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  # Check results section
+  [ $status -eq 1 ]
+  [ "${lines[0]}" = "Define and run multi-container applications with Docker." ]
+}
+
+@test "Checking docker_compose function. Case#2 Call with specified command" {
+  # Run section
+  run docker_compose version
+
+  # Debug section
+  cwd=$(pwd)
+  echo "+=============================================================="
+  echo "+ Current path: $cwd"
+  cd $(get_yml_path)
+  echo "+ Yml path directory: $(pwd)"
+
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  # Check results section
+  [ $status -eq 0 ]
 }
