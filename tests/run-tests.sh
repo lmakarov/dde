@@ -5,7 +5,7 @@ cd ../../drude-d7-testing
 
 OS="${OS:-mac}"
 if [ ! -z "$1" ]; then
-  OS="$1"
+	OS="$1"
 fi
 
 # Run tests. Order is important.

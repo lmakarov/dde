@@ -3,16 +3,16 @@
 load dsh_script
 
 @test "Checking dsh update" {
-  dsh update
+	dsh update
 }
 
 @test "Checking dsh update output" {
-  run dsh update
+	run dsh update
 
-  [ $status -eq 0 ]
-  [[ $output =~ "Use dsh update" ]]
-  [[ $output =~ "prerequisites" ]]
-  [[ $output =~ "boot2docker" ]]
-  [[ $output =~ "images" ]]
-  [[ $output =~ "dsh" ]]
+	[ $status -eq 0 ]
+	[[ $output =~ "Use dsh update" ]]
+	[[ $output =~ "prerequisites" ]]
+	[[ $output =~ "boot2docker" ]]
+	[[ $output =~ "images" ]]
+	[[ $output =~ "dsh" ]]
 }
