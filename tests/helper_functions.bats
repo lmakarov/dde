@@ -79,11 +79,9 @@ not_true_if_failed() {
   echo "+ Current directory: $cwd"
   local pathdiff=${cwd#$proj_root/}
   echo "+ Path diff: $pathdiff"
+
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   # Check results section
   [ $status -eq 0 ]
@@ -102,11 +100,9 @@ not_true_if_failed() {
   echo "+ Current directory: $cwd"
   local pathdiff=${cwd#$proj_root/}
   echo "+ Path diff: $pathdiff"
+
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   # Check results section
   [ $status -eq 0 ]
@@ -125,10 +121,7 @@ not_true_if_failed() {
   echo "+ Input string: $string"
 
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   # Check results section
   [ $status -eq 0 ]
@@ -143,13 +136,9 @@ not_true_if_failed() {
   echo "==============================================================="
   echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
   echo "==============================================================="
+
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+ Current checked value: ${lines[8]}"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines" "Current checked value: ${lines[8]}"
 
   # Check results section
   [ $status -eq 0 ]
@@ -165,12 +154,9 @@ not_true_if_failed() {
   echo "==============================================================="
   echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
   echo "==============================================================="
+
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   # Check results section
   [ $status -eq 0 ]
@@ -188,13 +174,8 @@ not_true_if_failed() {
   cd $(get_yml_path)
   echo "+ Yml path directory: $(pwd)"
 
-
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   # Check results section
   [ $status -eq 1 ]
@@ -212,13 +193,9 @@ not_true_if_failed() {
   cd $(get_yml_path)
   echo "+ Yml path directory: $(pwd)"
 
-
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
+
 
   # Check results section
   [ $status -eq 0 ]
@@ -236,11 +213,7 @@ not_true_if_failed() {
   echo "==============================================================="
 
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   # Check results section
   [ $status -eq 0 ]
@@ -259,11 +232,7 @@ not_true_if_failed() {
   echo "==============================================================="
 
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   # Check results section
   [ $status -eq 0 ]
@@ -274,64 +243,35 @@ not_true_if_failed() {
   # Debug section.
   # @todo add test case checking that win and linux can't be true
 
-  # Check if OS is Linux
-  run bash -c 'uname | grep "Linux"'
-  linux=$output
-  is_linux=$([[ "$linux" = 'Linux' ]] && echo 0 || echo 1)
-
-  # Check if OS is Mac
-  run bash -c 'uname | grep "Darwin"'
-  mac=$output
-  is_mac=$([[ "$mac" = 'Darwin' ]] && echo 0 || echo 1)
-
-  # Check if OS is Win
-  run bash -c 'uname | grep "CYGWIN_NT"'
-  is_win=$([[ "$win" = 'CYGWIN_NT' ]] && echo 0 || echo 1)
+  # Value from preset variable.
+  [[ "$OS" = "linux" ]] && linux=0 || linux=1
 
   # Debug section
   echo "==============================================================="
-  echo "Is linux: $is_linux"
-  echo "Is mac: $is_mac"
-  echo "Is win: $is_win"
+  echo "Is linux: $linux"
+  echo "OS: $OS"
   echo "==============================================================="
 
   # Run test itself
   run is_linux
 
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
-  [ $status -eq $is_linux ]
-
+  [ $status -eq $linux ]
 }
 
 @test "Checking is_windows function." {
   # Debug section.
   # @todo add test case checking that win and linux can't be true
 
-  # Check if OS is Linux
-  run bash -c 'uname | grep "Linux"'
-  linux=$output
-  is_linux=$([[ "$linux" = 'Linux' ]] && echo 0 || echo 1)
-
-  # Check if OS is Mac
-  run bash -c 'uname | grep "Darwin"'
-  mac=$output
-  is_mac=$([[ "$mac" = 'Darwin' ]] && echo 0 || echo 1)
-
-  # Check if OS is Win
-  run bash -c 'uname | grep "CYGWIN_NT"'
-  is_win=$([[ "$win" = 'CYGWIN_NT' ]] && echo 0 || echo 1)
+  # Value from preset variable.
+  [[ "$OS" = "win" ]] && win=0 || win=1
 
   # Debug section
   echo "==============================================================="
-  echo "Is linux: $is_linux"
-  echo "Is mac: $is_mac"
-  echo "Is win: $is_win"
+  echo "Is win: $win"
+  echo "OS: $OS"
   echo "==============================================================="
 
   # Run test itself
@@ -344,47 +284,29 @@ not_true_if_failed() {
   echo "+ Current lines: $lines"
   echo "+=============================================================="
 
-  [ $status -eq $is_win ]
-
+  [ $status -eq $win ]
 }
 
 @test "Checking is_mac function." {
   # Debug section.
   # @todo add test case checking that win and linux can't be true
 
-  # Check if OS is Linux
-  run bash -c 'uname | grep "Linux"'
-  linux=$output
-  is_linux=$([[ "$linux" = 'Linux' ]] && echo 0 || echo 1)
-
-  # Check if OS is Mac
-  run bash -c 'uname | grep "Darwin"'
-  mac=$output
-  is_mac=$([[ "$mac" = 'Darwin' ]] && echo 0 || echo 1)
-
-  # Check if OS is Win
-  run bash -c 'uname | grep "CYGWIN_NT"'
-  is_win=$([[ "$win" = 'CYGWIN_NT' ]] && echo 0 || echo 1)
+  # Value from preset variable.
+  [[ "$OS" = "mac" ]] && mac=0 || mac=1
 
   # Debug section
   echo "==============================================================="
-  echo "Is linux: $is_linux"
-  echo "Is mac: $is_mac"
-  echo "Is win: $is_win"
+  echo "Is mac: $mac"
+  echo "OS: $OS"
   echo "==============================================================="
 
   # Run test itself
   run is_mac
 
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
-  [ $status -eq $is_mac ]
-
+  [ $status -eq $mac ]
 }
 
 @test "Checking is_boot2docker function." {
@@ -405,12 +327,7 @@ not_true_if_failed() {
   run is_boot2docker
 
   # Always output status and output if failed
-  echo "+=============================================================="
-  echo "+ Current status: $status"
-  echo "+ Current output: $output"
-  echo "+ Current lines: $lines"
-  echo "+=============================================================="
+  echo_all_info "$status" "$output" "$lines"
 
   [ $status -eq $is_boot2socker ]
-
 }

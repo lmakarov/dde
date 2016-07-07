@@ -14,10 +14,26 @@ You can run any test from **drude-d7-testing** directory using next command:
 bats ../drude/tests/start.bats
 ```
 
+By default OS is "OS X" (mac). You can set enviroment for test (OS is mac|linux|win):
+```
+OS=linux bats ../drude/tests/start.bats
+```
+
 You can run all tests using next command (it must be run from **drude/tests directory**):
 ```
 ./run-tests.sh
 ```
+
+Or you can set OS:
+```
+OS=linux ./run-tests.sh
+```
+or specify parameter:
+
+```
+./run-tests.sh linux
+```
+
 
 ## Tests overview
 
