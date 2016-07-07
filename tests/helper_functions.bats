@@ -331,3 +331,204 @@ not_true_if_failed() {
 
   [ $status -eq $is_boot2socker ]
 }
+
+@test "Checking is_docker_beta function. Case#1 Not beta version" {
+  DOCKER_BETA=0
+  # Run section
+  run is_docker_beta
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 1 ]
+}
+
+@test "Checking is_docker_beta function. Case#2 Beta version" {
+  DOCKER_BETA=1
+  # Run section
+  run is_docker_beta
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+}
+
+@test "Checking is_binary_found function. Case#1: existing binary" {
+  # Run section
+  run is_binary_found 'docker'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+
+}
+
+@test "Checking is_binary_found function. Case#2: fake binary" {
+  # Run section
+  run is_binary_found 'fake_binary'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 1 ]
+
+}
+
+@test "Checking check_binary_found function. Case#1: existing binary" {
+  # Run section
+  run check_binary_found 'docker'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+
+}
+
+@test "Checking check_binary_found function. Case#2: fake binary" {
+  # Run section
+  run check_binary_found 'fake_binary'
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 1 ]
+}
+
+#TODO: add all OS compatible test version, using skip for now.
+@test "Checking is_docker_runnning function. Case#1: Linux docker running" {
+  # Run section
+  if [[ $(is_linux) -ne 0 ]]; then
+    skip "This test is available only for Linux versions."
+  fi
+  # start docker service if it's already running it will proceed.
+  sudo service docker start
+  run is_docker_running
+
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  [ $status -eq 0 ]
+}
+
+@test "Checking is_docker_runnning function. Case#1: Linux docker not running" {
+  # Run section
+  if [[ $(is_linux) -ne 0 ]]; then
+    skip "This test is available only for Linux versions."
+  fi
+  # Stop containers
+  run stop
+  # Stop Docker service
+  sudo service docker stop
+  sleep 1
+  # Run check
+  run is_docker_running
+  sleep 1
+  # Always output status and output if failed
+  echo "+=============================================================="
+  echo "+ Current status: $status"
+  echo "+ Current output: $output"
+  echo "+ Current lines: $lines"
+  echo "+=============================================================="
+
+  docker_state=$status
+
+  # Start docker
+  sudo service docker start
+  # Start containers
+  run start
+
+  [ $docker_state -ne 0 ]
+}
+
+@test "Checking check_yml function. Case#1 Linux docker-compose exists." {
+  if [[ $(is_linux) -ne 0 || $(is_docker_beta) -ne 0 ]]; then
+	  # Run tests
+	  run check_yml
+
+	  echo "+=============================================================="
+	  echo "+ Current status: $status"
+	  echo "+ Current output: $output"
+	  echo "+ Current lines: $lines"
+	  echo "+=============================================================="
+
+	  [ $status -eq 0 ]
+  fi
+}
+
+@test "Checking check_yml function. Case#1 Linux docker-compose not exists." {
+  if [[ $(is_linux) -ne 0 ]]; then
+	cd ../drude
+	# Run tests
+	run check_yml
+
+	echo "+=============================================================="
+	echo "+ Current status: $status"
+	echo "+ Current output: $output"
+	echo "+ Current lines: $lines"
+	echo "+=============================================================="
+
+	  [ $status -eq 1 ]
+  fi
+}
+
+@test "Checking check_yml function. Case#1 Win and Mac docker-compose and vagrant exists." {
+  if [[ $(is_windows) -ne 0 || $(is_mac) -ne 0 ]]; then
+	# Run tests
+	run check_yml
+
+	echo "+=============================================================="
+	echo "+ Current status: $status"
+	echo "+ Current output: $output"
+	echo "+ Current lines: $lines"
+	echo "+=============================================================="
+
+	  [ $status -eq 0 ]
+  fi
+}
+
+@test "Checking check_yml function. Case#1 Win and Mac docker-compose and vagrant not exists." {
+  if [[ $(is_windows) -ne 0 || $(is_mac) -ne 0 ]]; then
+	# Run tests
+	cd ../drude
+	run check_yml
+
+	echo "+=============================================================="
+	echo "+ Current status: $status"
+	echo "+ Current output: $output"
+	echo "+ Current lines: $lines"
+	echo "+=============================================================="
+
+	[ $status -eq 1 ]
+  fi
+}
