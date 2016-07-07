@@ -84,6 +84,7 @@ not_true_if_failed() {
 	[ "$output" = "docroot/sites/all" ]
 }
 
+# @todo check this function
 @test "Checking get_current_relative_path function. Case#2: Outside docroot folder condition" {
 	run get_current_relative_path
 
@@ -98,7 +99,7 @@ not_true_if_failed() {
 	# </debug section>
 
 	[ $status -eq 0 ]
-	[ "$output" = "" ]
+	[ "$output" = "$cwd" ]
 }
 
 @test "Checking clean_string function." {
