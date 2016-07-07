@@ -47,5 +47,6 @@ start.bats => dsh start
 There are also files with tests for dsh functions:
 ```
 helper_functions.bats - Helper functions
-(@todo add others)
+basics_check_functions.bats - Basics check functions
+control_functions.bats - Control functions
 ```
