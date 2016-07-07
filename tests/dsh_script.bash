@@ -11,17 +11,13 @@ setup() {
 	OS="${OS:-mac}"
 }
 
-echo_additional_lines() {
-	for line in "$@"; do
-		echo "+ $line"
-	done
-}
-
-echo_all_info() {
+teardown() {
 	echo "+=============================================================="
-	echo "+ Current status: $1"
-	echo "+ Current output: $2"
-	echo "+ Current lines: $3"
-	echo_additional_lines "${@:4}"
+	echo "< Current output >:"
+	echo $output
+	echo "< Current lines >:"
+	for line in "${lines[@]}"; do
+		echo $line
+	done
 	echo "+=============================================================="
 }

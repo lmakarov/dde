@@ -8,9 +8,6 @@ load dsh_script
 
 		[ $status -eq 0 ]
 	fi
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking check_yml function. Case#1 Linux docker-compose not exists." {
@@ -20,9 +17,6 @@ load dsh_script
 
 		[ $status -eq 1 ]
 	fi
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking check_yml function. Case#1 Win and Mac docker-compose and vagrant exists." {
@@ -32,9 +26,6 @@ load dsh_script
 
 		[ $status -eq 0 ]
 	fi
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking check_yml function. Case#1 Win and Mac docker-compose and vagrant not exists." {
@@ -45,7 +36,4 @@ load dsh_script
 
 		[ $status -eq 1 ]
 	fi
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }

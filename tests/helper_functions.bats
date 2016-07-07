@@ -70,10 +70,7 @@ not_true_if_failed() {
 	cd docroot/sites/all
 	run get_current_relative_path
 
-	[ $status -eq 0 ]
-	[ "$output" = "docroot/sites/all" ]
-
-	# Debug section
+	# <debug section>
 	echo "+=============================================================="
 	local proj_root=$(get_yml_path)
 	echo "+ Project root: $proj_root"
@@ -81,17 +78,16 @@ not_true_if_failed() {
 	echo "+ Current directory: $cwd"
 	local pathdiff=${cwd#$proj_root/}
 	echo "+ Path diff: $pathdiff"
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 0 ]
+	[ "$output" = "docroot/sites/all" ]
 }
 
 @test "Checking get_current_relative_path function. Case#2: Outside docroot folder condition" {
 	run get_current_relative_path
 
-	[ $status -eq 0 ]
-	[ "$output" = "" ]
-
-	# Debug section
+	# <debug section>
 	echo "+=============================================================="
 	local proj_root=$(get_yml_path)
 	echo "+ Project root: $proj_root"
@@ -99,114 +95,106 @@ not_true_if_failed() {
 	echo "+ Current directory: $cwd"
 	local pathdiff=${cwd#$proj_root/}
 	echo "+ Path diff: $pathdiff"
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 0 ]
+	[ "$output" = "" ]
 }
 
 @test "Checking clean_string function." {
 	local string="Abc-123/"
 	run clean_string $string
 
-	[ $status -eq 0 ]
-	[ "$output" = "Abc-123" ]
-
-	# Debug section
+	# <debug section>
 	local cleaned=$(echo "$string" | sed -e 's/[^a-zA-Z0-9_-]$//')
 	echo ${cleaned}
 	echo "+=============================================================="
 	echo "+ Input string: $string"
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 0 ]
+	[ "$output" = "Abc-123" ]
 }
 
 @test "Checking get_mysql_connect function. Case#1: Outside of docroot" {
 	run get_mysql_connect
 
-	[ $status -eq 0 ]
-	[ "${lines[8]}" = "#1 [internal function]: drush_sql_connect()" ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
-	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines" "Current checked value: ${lines[8]}"
+	[ $status -eq 0 ]
+	[ "${lines[8]}" = "#1 [internal function]: drush_sql_connect()" ]
 }
 
 @test "Checking get_mysql_connect function. Case#2: Inside of docroot" {
 	cd docroot/sites
 	run get_mysql_connect
 
-	[ $status -eq 0 ]
-	[ "$output" = "mysql --user=drupal --password=123 --database=drupal --host=172.17.0.5" ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
 	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 0 ]
+	[[ "$output" =~ "mysql --user=drupal --password=123 --database=drupal --host" ]]
 }
 
 @test "Checking docker_compose function. Case#1: Call without specified command" {
 	run docker_compose
 
-	[ $status -eq 1 ]
-	[ "${lines[0]}" = "Define and run multi-container applications with Docker." ]
-
-	# Debug section
+	# <debug section>
 	cwd=$(pwd)
 	echo "+=============================================================="
 	echo "+ Current path: $cwd"
 	cd $(get_yml_path)
 	echo "+ Yml path directory: $(pwd)"
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 1 ]
+	[ "${lines[0]}" = "Define and run multi-container applications with Docker." ]
 }
 
 @test "Checking docker_compose function. Case#2: Call with specified command" {
 	run docker_compose version
 
-	[ $status -eq 0 ]
-
-	# Debug section
+	# <debug section>
 	cwd=$(pwd)
 	echo "+=============================================================="
 	echo "+ Current path: $cwd"
 	cd $(get_yml_path)
 	echo "+ Yml path directory: $(pwd)"
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 0 ]
 }
 
 @test "Checking get_container_id function. Case#1: cli" {
 	run get_container_id 'cli'
 
-	[ $status -eq 0 ]
-	[ "$output" = $compose_output ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Docker compose output: "
 	compose_output=$(docker-compose ps -q cli | tr -d '\r')
 	echo $compose_output
-	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 0 ]
+	[ "$output" = $compose_output ]
 }
 
 @test "Checking get_container_id function. Case#2: web" {
 	run get_container_id 'web'
 
-	[ $status -eq 0 ]
-	[ "$output" = $compose_output ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Docker compose output: "
 	compose_output=$(docker-compose ps -q web | tr -d '\r')
 	echo $compose_output
-	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq 0 ]
+	[ "$output" = $compose_output ]
 }

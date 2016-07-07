@@ -8,15 +8,13 @@ load dsh_script
 
 	run is_linux
 
-	[ $status -eq $linux ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Is linux: $linux"
 	echo "OS: $OS"
-	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq $linux ]
 }
 
 @test "Checking is_windows function." {
@@ -25,15 +23,13 @@ load dsh_script
 
 	run is_windows
 
-	[ $status -eq $win ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Is win: $win"
 	echo "OS: $OS"
-	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq $win ]
 }
 
 @test "Checking is_boot2docker function." {
@@ -44,14 +40,12 @@ load dsh_script
 
 	run is_boot2docker
 
-	[ $status -eq $is_boot2socker ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Is boot2docker: $is_boot2socker"
-	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq $is_boot2socker ]
 }
 
 @test "Checking is_mac function." {
@@ -60,15 +54,13 @@ load dsh_script
 
 	run is_mac
 
-	[ $status -eq $mac ]
-
-	# Debug section
+	# <debug section>
 	echo "==============================================================="
 	echo "Is mac: $mac"
 	echo "OS: $OS"
-	echo "==============================================================="
+	# </debug section>
 
-	echo_all_info "$status" "$output" "$lines"
+	[ $status -eq $mac ]
 }
 
 @test "Checking is_docker_beta function. Case#1 Not beta version" {
@@ -76,9 +68,6 @@ load dsh_script
 	run is_docker_beta
 
 	[ $status -eq 1 ]
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking is_docker_beta function. Case#2 Beta version" {
@@ -86,86 +75,28 @@ load dsh_script
 	run is_docker_beta
 
 	[ $status -eq 0 ]
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking is_binary_found function. Case#1: existing binary" {
 	run is_binary_found 'docker'
 
 	[ $status -eq 0 ]
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking is_binary_found function. Case#2: fake binary" {
 	run is_binary_found 'fake_binary'
 
 	[ $status -eq 1 ]
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking check_binary_found function. Case#1: existing binary" {
 	run check_binary_found 'docker'
 
 	[ $status -eq 0 ]
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
 }
 
 @test "Checking check_binary_found function. Case#2: fake binary" {
 	run check_binary_found 'fake_binary'
 
 	[ $status -eq 1 ]
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
-}
-
-#TODO: add all OS compatible test version, using skip for now.
-@test "Checking is_docker_runnning function. Case#1: Linux docker running" {
-	if [[ "$OS" != "linux" ]]; then
-		skip "This test is available only for Linux versions."
-	fi
-
-	# Start docker service if it's already running it will proceed.
-	sudo service docker start #@todo upd this test - don't use sudo
-	run is_docker_running
-
-	[ $status -eq 0 ]
-
-	# Debug section
-	echo_all_info "$status" "$output" "$lines"
-}
-
-@test "Checking is_docker_runnning function. Case#1: Linux docker not running" {
-	if [[ "$OS" != "linux" ]]; then
-		skip "This test is available only for Linux versions."
-	fi
-
-	# Stop containers
-	run stop
-	# Stop Docker service
-	sudo service docker stop #@todo upd this test - don't use sudo
-	sleep 1
-	# Run check
-	run is_docker_running
-	sleep 1
-
-	docker_state=$status
-
-	# Start docker
-	sudo service docker start
-	# Start containers
-	run start
-
-	[ $docker_state -ne 0 ]
-
-	# Always output status and output if failed
-	echo_all_info "$status" "$output" "$lines"
 }
