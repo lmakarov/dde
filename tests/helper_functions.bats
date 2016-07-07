@@ -67,10 +67,12 @@ not_true_if_failed() {
 }
 
 @test "Checking get_current_relative_path function. Case#1: Inside docroot folder condition" {
-	# Run section
 	cd docroot/sites/all
 	run get_current_relative_path
 
+	[ $status -eq 0 ]
+	[ "$output" = "docroot/sites/all" ]
+
 	# Debug section
 	echo "+=============================================================="
 	local proj_root=$(get_yml_path)
@@ -80,17 +82,14 @@ not_true_if_failed() {
 	local pathdiff=${cwd#$proj_root/}
 	echo "+ Path diff: $pathdiff"
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-	# Check results section
-	[ $status -eq 0 ]
-	[ "$output" = "docroot/sites/all" ]
 }
 
 @test "Checking get_current_relative_path function. Case#2: Outside docroot folder condition" {
-	# Run section
 	run get_current_relative_path
+
+	[ $status -eq 0 ]
+	[ "$output" = "" ]
 
 	# Debug section
 	echo "+=============================================================="
@@ -101,18 +100,15 @@ not_true_if_failed() {
 	local pathdiff=${cwd#$proj_root/}
 	echo "+ Path diff: $pathdiff"
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-	# Check results section
-	[ $status -eq 0 ]
-	[ "$output" = "" ]
 }
 
 @test "Checking clean_string function." {
-	# Run section
 	local string="Abc-123/"
 	run clean_string $string
+
+	[ $status -eq 0 ]
+	[ "$output" = "Abc-123" ]
 
 	# Debug section
 	local cleaned=$(echo "$string" | sed -e 's/[^a-zA-Z0-9_-]$//')
@@ -120,52 +116,43 @@ not_true_if_failed() {
 	echo "+=============================================================="
 	echo "+ Input string: $string"
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-	# Check results section
-	[ $status -eq 0 ]
-	[ "$output" = "Abc-123" ]
 }
 
 @test "Checking get_mysql_connect function. Case#1: Outside of docroot" {
-	# Run section
 	run get_mysql_connect
+
+	[ $status -eq 0 ]
+	[ "${lines[8]}" = "#1 [internal function]: drush_sql_connect()" ]
 
 	# Debug section
 	echo "==============================================================="
 	echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
 	echo "==============================================================="
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines" "Current checked value: ${lines[8]}"
-
-	# Check results section
-	[ $status -eq 0 ]
-	[ "${lines[8]}" = "#1 [internal function]: drush_sql_connect()" ]
 }
 
 @test "Checking get_mysql_connect function. Case#2: Inside of docroot" {
-	# Run section
 	cd docroot/sites
 	run get_mysql_connect
+
+	[ $status -eq 0 ]
+	[ "$output" = "mysql --user=drupal --password=123 --database=drupal --host=172.17.0.5" ]
 
 	# Debug section
 	echo "==============================================================="
 	echo "Output of sql-connect with disabled TTY: $(DRUDE_IS_TTY=0 _run drush sql-connect)"
 	echo "==============================================================="
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-	# Check results section
-	[ $status -eq 0 ]
-	[ "$output" = "mysql --user=drupal --password=123 --database=drupal --host=172.17.0.5" ]
 }
 
 @test "Checking docker_compose function. Case#1: Call without specified command" {
-	# Run section
 	run docker_compose
+
+	[ $status -eq 1 ]
+	[ "${lines[0]}" = "Define and run multi-container applications with Docker." ]
 
 	# Debug section
 	cwd=$(pwd)
@@ -174,17 +161,13 @@ not_true_if_failed() {
 	cd $(get_yml_path)
 	echo "+ Yml path directory: $(pwd)"
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-	# Check results section
-	[ $status -eq 1 ]
-	[ "${lines[0]}" = "Define and run multi-container applications with Docker." ]
 }
 
 @test "Checking docker_compose function. Case#2: Call with specified command" {
-	# Run section
 	run docker_compose version
+
+	[ $status -eq 0 ]
 
 	# Debug section
 	cwd=$(pwd)
@@ -193,17 +176,14 @@ not_true_if_failed() {
 	cd $(get_yml_path)
 	echo "+ Yml path directory: $(pwd)"
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-
-	# Check results section
-	[ $status -eq 0 ]
 }
 
 @test "Checking get_container_id function. Case#1: cli" {
-	# Run section
 	run get_container_id 'cli'
+
+	[ $status -eq 0 ]
+	[ "$output" = $compose_output ]
 
 	# Debug section
 	echo "==============================================================="
@@ -212,17 +192,14 @@ not_true_if_failed() {
 	echo $compose_output
 	echo "==============================================================="
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-	# Check results section
-	[ $status -eq 0 ]
-	[ "$output" = $compose_output ]
 }
 
 @test "Checking get_container_id function. Case#2: web" {
-	# Run section
 	run get_container_id 'web'
+
+	[ $status -eq 0 ]
+	[ "$output" = $compose_output ]
 
 	# Debug section
 	echo "==============================================================="
@@ -231,10 +208,5 @@ not_true_if_failed() {
 	echo $compose_output
 	echo "==============================================================="
 
-	# Always output status and output if failed
 	echo_all_info "$status" "$output" "$lines"
-
-	# Check results section
-	[ $status -eq 0 ]
-	[ "$output" = $compose_output ]
 }
