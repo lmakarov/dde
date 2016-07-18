@@ -12,7 +12,7 @@ load dsh_script
 
 @test "Checking check_yml function. Case#1 Linux docker-compose not exists." {
 	if [[ "$OS" = "linux"  ]]; then
-		cd ../drude
+		cd ..
 		run check_yml
 
 		[ $status -eq 1 ]
@@ -29,7 +29,7 @@ load dsh_script
 
 @test "Checking check_yml function. Case#1 Win and Mac docker-compose and vagrant not exists." {
 	if [[ "$OS" != "linux"  ]]; then
-		cd ../drude
+		cd ..
 		run check_yml
 
 		[ $status -eq 1 ]

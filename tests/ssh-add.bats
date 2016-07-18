@@ -3,7 +3,7 @@
 load dsh_script
 
 @test "Checking dsh ssh-add -D" {
-	dsh ssh-add -l
+	dsh ssh-add -D
 }
 
 @test "Checking dsh ssh-add -l" {
