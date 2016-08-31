@@ -935,7 +935,7 @@ install_subnet_rhel ()
 	if [ ! -f $interface ]; then
 		sudo touch $interface
 		sudo chmod 0777 $interface
-		sudo cat > $interface << EOF
+		cat > /tmp/drude.lo.interface << EOF
 DEVICE=lo:drude
 NAME=lo:drude
 NM_CONTROLLED=yes
@@ -943,10 +943,10 @@ TYPE=Loopback
 IPADDR=$DRUDE_SUBNET_RHEL
 NETMASK=255.255.255.0
 ONBOOT=yes
-PEERDNS=yes
-DNS=$DRUDE_IP
 EOF
+		sudo cp /tmp/drude.lo.interface $interface
 		sudo chmod 0655 $interface
+		rm -r /tmp/drude.lo.interface
 		sudo ifdown lo:drude && sudo ifup lo:drude
 	fi
 }
@@ -957,11 +957,13 @@ create_rhel_network_dispatcher_script ()
 	# Make sure this is not done twice
 	if [ ! -f $dispatcher ]; then
 		sudo touch $dispatcher
-		#sudo chmod 0777 $dispatcher
-		sudo echo lorem | sudo tee -a $dispatcher
-#grep -q -F $DRUDE_SUBNET_RHEL /etc/resolv.conf || sudo echo "nameserver $DRUDE_SUBNET_RHEL" | sudo tee -a /etc/resolv.conf
+		sudo chmod 0777 $dispatcher
+		cat > /tmp/drude.dispatcher << EOF
+grep -q -F $DRUDE_SUBNET_RHEL /etc/resolv.conf || echo "nameserver $DRUDE_SUBNET_RHEL" | tee -a /etc/resolv.conf
 EOF
+		sudo cp /tmp/drude.dispatcher $dispatcher
 		sudo chmod 0655 $dispatcher
+		rm -r /tmp/drude.dispatcher
 		sudo systemctl restart NetworkManager.service
 	fi
 }
