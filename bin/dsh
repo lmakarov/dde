@@ -1247,6 +1247,14 @@ smb_share_mount()
 	docker-machine ssh ${DOCKER_MACHINE_NAME} "$command_mount"
 }
 
+# Method to bind home directory to /.home inside vm.
+smb_bind_home()
+{
+	local HOME_PATH="$(cygpath -m ~ | sed 's/^C:/\/c/')"
+	command_bind="sudo mkdir -p /.home && sudo mount -o bind ${HOME_PATH} /.home"
+	docker-machine ssh ${DOCKER_MACHINE_NAME} "$command_bind"
+}
+
 docker_machine_mount_smb ()
 {
 	# add share \\hostname\c writable to current user
@@ -1264,6 +1272,9 @@ docker_machine_mount_smb ()
 				(echo-red "Error creating share" && exit 1)
 		fi
 	done
+
+	smb_bind_home || \
+		(echo-red "Error binding home" && exit 1)
 
 	return
 }
