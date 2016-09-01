@@ -2,6 +2,12 @@
 
 `xdebug` extension is disabled by default as it causes about 20% performance hit.
 
+There two variants: you can use xdebug for debuging requests from browser or you can debugin requests from console php (for example Drush commands).
+
+For configuration first variant use **Prerequisites** and **Setup**.
+
+For configuration second variant use **Setup for console php**.
+
 ## Prerequisites
 
 - [PHPStorm](https://www.jetbrains.com/phpstorm/)
@@ -36,6 +42,39 @@
     <img src="img/xdebug-mapping.png" />
 
 Happy debugging!
+
+## Setup for console php
+1. Set environment variable on the `cli` service
+
+    ```yml
+    cli:
+      ...
+      environment:
+        - XDEBUG_ENABLED=1
+        - XDEBUG_CONFIG=idekey=PHPSTORM remote_host=192.168.10.1
+        - PHP_IDE_CONFIG=serverName=drupal7.drude
+      ...
+    ```
+   You need to replace **drupal7.drude** with your domain. You can find in `web` section:
+   ```yml
+   web:
+     ...
+     environment:
+       - VIRTUAL_HOST=drupal7.drude
+     ...
+     ...
+   ```
+
+2. Update container configuration with `dsh up`
+3. You can run your scripts from console and debug it in the same way as requests from browser.
+
+For example you can run drush command:
+
+    ```bash
+    dsh drush fra -y
+    ```
+
+and debug this drush command from feature module.
 
 ### Resources
 
