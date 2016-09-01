@@ -209,6 +209,8 @@ Open *Run/Debug Configurations* (menu item *Run->Edit Configurations...*). In th
 
 Choose Test Runner option *Defined in the configuration file*.
 
+Or you can choose `behat.yml` from your host machine (use *File* option in this case). It makes no difference.
+
 ### Run tests
 
 On the PhpStorm panel choose Behat debug configuration and run it:
@@ -225,6 +227,37 @@ You can also open folder with Behat features (`tests/behat/features` directory i
 run any feature tests by right clicking on it and choosing **Run 'feature-name'** option.
 
 ![](img/behat-test-features.png)
+
+#### Known issue
+On this step you can see an error:
+
+> [PDOException]
+>   SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+
+In this case check Drupal `settings.php`. Please don't use variables for DB settings:
+```PHP
+# Drude DB connection settings.
+$databases['default']['default'] = array (
+  'database' => getenv('DB_1_ENV_MYSQL_DATABASE'),
+  'username' => getenv('DB_1_ENV_MYSQL_USER'),
+  'password' => getenv('DB_1_ENV_MYSQL_PASSWORD'),
+  'host' => getenv('DB_1_PORT_3306_TCP_ADDR'),
+  'driver' => 'mysql',
+);
+```
+
+Use only values - something like this:
+
+```PHP
+# Drude DB connection settings.
+$databases['default']['default'] = array (
+  'database' => 'drupal',
+  'username' => 'drupal',
+  'password' => '123',
+  'host' => 'db',
+  'driver' => 'mysql',
+);
+```
 
 ## Using host selenium2-driver
 
@@ -256,3 +289,19 @@ default:
 ```
 
 `192.168.10.1` is your machine's IP in Drude subnet.
+
+If you use host selinium driver, please don't use selenium2 node - check and comment `browser` container config in your docker-compose.yml file:
+
+```yml
+# selenium2 node
+# Uncomment the service definition section below and the link in the web service above to start using selenium2 driver for Behat tests requiring JS support.
+#browser:
+#  hostname: browser
+#  image: selenium/standalone-chrome
+#  ports:
+#    - "4444"
+#  environment:
+#    - DOMAIN_NAME=drude-d7-testing.browser.docker
+```
+
+If you use host selinium driver and selenium from docker container, behat will use configuration from `docker:` part of `behat.common.yml` instead of `default:` part in `behat.yml`. And it will not work.
