@@ -2,7 +2,7 @@
 
 `xdebug` extension is disabled by default as it causes about 20% performance hit.
 
-There two variants: you can use xdebug for debuging requests from browser or you can debugin requests from console php (for example Drush commands).
+There two variants: you can use xdebug for debuging requests from browser or you can debug requests from console (for example Drush commands).
 
 For configuration first variant use **Prerequisites** and **Setup**.
 
@@ -55,7 +55,7 @@ Happy debugging!
         - PHP_IDE_CONFIG=serverName=drupal7.drude
       ...
     ```
-   You need to replace **drupal7.drude** with your domain. You can find in `web` section:
+   You need to replace **drupal7.drude** with your domain. You can find it in `web` section:
    ```yml
    web:
      ...
