@@ -53,3 +53,34 @@ load "helpers/helper"
     fi
   done
 }
+
+
+# 2.1
+@test "2.1  - Opened network traffic between containers" {
+  result=$(get_docker_effective_command_line_args '--icc')
+  [ "$output" = "" ]
+}
+
+# 2.2
+@test "2.2  - Set the logging level" {
+  result=$(get_docker_effective_command_line_args '-l')
+  run grep 'debug' <<< "$result"
+  assert_failure
+}
+
+# 2.3
+@test "2.3  - Allow Docker to make changes to iptables" {
+  result=$(get_docker_effective_command_line_args '--iptables')
+  run grep "false" <<< "$result"
+  assert_failure
+}
+
+# 3.1
+@test "3.1  - Verify that docker.service file ownership is set to root:root" {
+  file="$(get_systemd_service_file docker.service)"
+  if [ -f "$file" ]; then
+    if [ "$(stat -c %u%g "$file")" -ne 00 ]; then
+      fail "Wrong ownership for $file"
+    fi
+  fi
+}

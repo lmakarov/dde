@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+# Some helper functions were took here: https://github.com/gaia-adm/docker-bench-test
+
 # Returns the absolute path of a given string
 abspath () { case "$1" in /*)printf "%s\n" "$1";; *)printf "%s\n" "$PWD/$1";; esac; }
 
@@ -31,5 +33,78 @@ get_etc_path(){
         echo "/host/etc"
     else
         echo "/etc"
+    fi
+}
+
+# Compares two strings and returns 0 if the second is a substring of the first
+contains() {
+    string="$1"
+    substring="$2"
+    if [ "${string#*$substring}" != "$string" ]
+    then
+        return 0    # $substring is in $string
+    else
+        return 1    # $substring is not in $string
+    fi
+}
+
+# Extracts all commandline args from the oldest running processes named like the first parameter
+get_command_line_args() {
+    PROC="$1"
+
+    for PID in $(pgrep -x -o "$PROC")
+    do
+        tr "\0" " " < /proc/"$PID"/cmdline
+    done
+}
+
+# Extract the cumulative command line arguments for the docker daemon
+#
+# If specified multiple times, all matches are returned.
+# Accounts for long and short variants, call with short option.
+# Does not account for option defaults or implicit options.
+get_docker_cumulative_command_line_args() {
+    OPTION="$1"
+
+    get_command_line_args docker |
+    # normalize known long options to their short versions
+    sed \
+        -e 's/\-\-debug/-D/g' \
+        -e 's/\-\-host/-H/g' \
+        -e 's/\-\-log-level/-l/g' \
+        -e 's/\-\-version/-v/g' \
+        |
+    # normalize parameters separated by space(s) to -O=VALUE
+    sed \
+        -e 's/\-\([DHlv]\)[= ]\([^- ][^ ]\)/-\1=\2/g' \
+        |
+    # get the last interesting option
+    tr ' ' "\n" |
+    grep "^${OPTION}" |
+    # normalize quoting of values
+    sed \
+        -e 's/"//g' \
+        -e "s/'//g"
+}
+
+# Extract the effective command line arguments for the docker daemon
+#
+# Accounts for multiple specifications, takes the last option.
+# Accounts for long and short variants, call with short option
+# Does not account for option default or implicit options.
+get_docker_effective_command_line_args() {
+    OPTION="$1"
+    get_docker_cumulative_command_line_args $OPTION | tail -n1
+}
+
+get_systemd_service_file(){
+    SERVICE="$1"
+
+    if [ -f "$(get_etc_path)/systemd/system/$SERVICE" ]; then
+      echo "$(get_etc_path)/systemd/system/$SERVICE"
+    elif systemctl show -p FragmentPath "$SERVICE" 2> /dev/null 1>&2; then
+      systemctl show -p FragmentPath "$SERVICE" | sed 's/.*=//'
+    else
+      echo "/usr/lib/systemd/system/$SERVICE"
     fi
 }
