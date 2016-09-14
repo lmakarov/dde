@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DSH_VERSION=1.20.3
+DSH_VERSION=1.20.5
 
 # Console colors
 red='\033[0;91m'
@@ -793,48 +793,23 @@ vmstat ()
 # @param $1 -D, -l or path to custom key
 ssh_add () {
 	# Check if ssh-agent container is running
-	local running=$(docker inspect --format="{{ .State.Running }}" ssh-agent 2> /dev/null)
-	if [ $? -eq 0 ] && [ "$running" == "true" ]; then
+	local running=$(docker inspect --format="{{ .State.Running }}" ssh-agent 2>/dev/null)
+	[[ "$running" != "true" ]] && return
 
-		local ssh_path="$HOME/.ssh"
-		# Home folder mount in boot2docker
-		if ! is_linux; then
-			ssh_path="/.home/.ssh"
-		fi
-		local key_path=""
-
-		case "$1" in
-			"")
-				if docker exec -it ssh-agent ssh-add -l > /dev/null; then
-					return; # Some key is present
-				fi
-				;;
-			-D) 
-				docker run --rm --volumes-from=ssh-agent -it "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add -D
-				exit 1
-				;;
-			-l) 
-				# We do a sed hack here to strip out '/root/.ssh' from the key path in the output from ssh-add, since this path may confuse people.
-				docker run --rm --volumes-from=ssh-agent -it "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add -l 2>&1 | sed 's/\/root\/.ssh\///g'
-				exit 1
-				;;
-			*) 
-				key_path="/root/.ssh/$1"
-				# We check $HOME here regardless Linux or Mac/Windows (boot2docker)
-				# $HOME is mounted as /.home in boot2docker
-				if [ ! -f "$HOME/.ssh/$1" ]; then
-					echo-red "SSH key file not found: $HOME/.ssh/$1"
-					exit 1
-				fi
-				;;
-		esac
-		
-		echo "Press ENTER or CTRL+C to skip entering passphrase."
-		# $ssh_path is mounted as /root/.ssh in the ssh-agent containers.
-		# When $key_path is empty, ssh-agent will be looking for both id_rsa and id_dsa in the home directory.
-		# We do a sed hack here to strip out '/root/.ssh' from the key path in the output from ssh-add, since this path may confuse people.
-		docker run --rm --volumes-from=ssh-agent -it -v "$ssh_path:/root/.ssh" "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add "$key_path" 2>&1 | sed 's/\/root\/.ssh\///g'
+	local ssh_path="$HOME/.ssh"
+	local key_path=""
+	# Home folder mount in boot2docker
+	if ! is_linux; then
+		ssh_path="/.home/.ssh"
 	fi
+
+	# When no arguments provided, check if ssh-agent already has at least one identity. If so, stop here.
+	docker exec ssh-agent ssh-add -l >/dev/null
+	if [[ $1 == "" && $? == 0 ]]; then return; fi
+
+	# When $key_path is empty, ssh-agent will be looking for both id_rsa and id_dsa in the home directory.
+	$winpty_cmd docker run --rm -it --volumes-from=ssh-agent -v "$ssh_path:/.ssh" "${IMAGE_SSH_AGENT}:${DRUDE_ITAG}" ssh-add "$@"
+ 	return $?
 }
 
 #----- Installations and updates -----
@@ -883,7 +858,7 @@ install_proxy_service ()
 	docker rm -f vhost-proxy >/dev/null 2>&1 || true
 	docker run -d --name vhost-proxy --label "group=system" --restart=always --privileged --userns=host \
 		-p 80:80 -p 443:443 \
-		-v /var/run/docker.sock:/tmp/docker.sock \
+		-v /var/run/docker.sock:/var/run/docker.sock \
 		"blinkreaction/nginx-proxy:${DRUDE_ITAG}" >/dev/null 2>&1
 }
 
@@ -931,11 +906,15 @@ install_ubuntu ()
 	fi
 
 	echo-green "Installing Docker..."
-	sudo service docker stop && \
-		curl -sSL https://get.docker.com/ | sh && \
-		sudo usermod -aG docker $(whoami) && \
-		sudo service docker start
-	docker --version
+	# Stop docker dervice if it exists
+	if sudo service docker status 2>/dev/null; then
+		echo "Stopping docker service..."
+		sudo service docker stop 2>/dev/null
+	fi
+	curl -sSL https://get.docker.com/ | sh && \
+	sudo usermod -aG docker $(whoami)
+	sudo service docker start 2>/dev/null
+	sudo docker version
 	if_failed "Docker installation/upgrade has failed."
 
 	echo-green "Installing Docker Compose..."
