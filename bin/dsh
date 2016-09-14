@@ -792,12 +792,12 @@ vmstat ()
 # Add key to ssh-agent or run ssh-add with provided @param
 # @param $1 -D, -l or path to custom key
 ssh_add () {
- 	# Check if ssh-agent container is running
- 	local running=$(docker inspect --format="{{ .State.Running }}" ssh-agent 2>/dev/null)
- 	[[ "$running" != "true" ]] && return
+	# Check if ssh-agent container is running
+	local running=$(docker inspect --format="{{ .State.Running }}" ssh-agent 2>/dev/null)
+	[[ "$running" != "true" ]] && return
 
- 	local ssh_path="$HOME/.ssh"
- 	local key_path=""
+	local ssh_path="$HOME/.ssh"
+	local key_path=""
 	# Home folder mount in boot2docker
 	if ! is_linux; then
 		ssh_path="/.home/.ssh"
