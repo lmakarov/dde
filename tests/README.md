@@ -9,6 +9,13 @@ You must have next structure of projects directory:
 >       \_ drude-d7-testing
 >       ...
 
+You need to install additional bats sub-modules. To perform this, perform next actions.
+```
+cd ~/projects/drude/tests
+git submodule init
+git submodule update
+```
+
 You can run any test from **drude-d7-testing** directory using next command:
 ```
 bats ../drude/tests/start.bats
@@ -50,3 +57,8 @@ helper_functions.bats - Helper functions
 basics_check_functions.bats - Basics check functions
 control_functions.bats - Control functions
 ```
+
+## Troubleshooting test
+
+Tests directory contains ```troubleshooting.bats```, which should not be started in general and not included in ```run-tests.sh```.
+This test have to be performed when something goes wrong.
