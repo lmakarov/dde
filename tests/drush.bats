@@ -10,7 +10,7 @@ load dsh_script
 	run dsh drush --version
 
 	[ $status -eq 0 ]
-	[[ ${lines[0]} =~ "Drush Version   :  8.0.5" ]]
+	[[ ${lines[0]} =~ "Drush Version   :  8.1.3" ]]
 }
 
 @test "Checking output of dsh drush st (Drupal version)" {
