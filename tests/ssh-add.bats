@@ -7,7 +7,9 @@ load dsh_script
 }
 
 @test "Checking dsh ssh-add -l" {
-	dsh ssh-add -l
+	run dsh ssh-add -l
+
+	[ $status -eq 1 ]
 }
 
 @test "Checking dsh ssh-add bats_rsa" {
@@ -19,7 +21,7 @@ load dsh_script
 	run dsh ssh-add doesnt_exist_rsa
 
 	[ $status -eq 1 ]
-	[[ $output =~ "SSH key file not found:" ]]
+	[[ $output =~ "/.ssh/doesnt_exist_rsa: No such file or directory" ]]
 }
 
 @test "Checking dsh ssh-add -l (one key)" {
@@ -39,7 +41,7 @@ load dsh_script
 @test "Checking dsh ssh-add -l (no keys)" {
 	run dsh ssh-add -l
 
-	[ $status -eq 0 ]
+	[ $status -eq 1 ]
 	[[ $output =~ "The agent has no identities." ]]
 }
 

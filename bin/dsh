@@ -807,8 +807,11 @@ ssh_add () {
 	docker exec ssh-agent ssh-add -l >/dev/null
 	if [[ $1 == "" && $? == 0 ]]; then return; fi
 
+	ssh_arg="$@"
+	if [[ $1 != "-l" && $1 != "-D" ]]; then ssh_arg="/.ssh/$@"; fi
+
 	# When $key_path is empty, ssh-agent will be looking for both id_rsa and id_dsa in the home directory.
-	$winpty_cmd docker run --rm -it --volumes-from=ssh-agent -v "$ssh_path:/.ssh" "${IMAGE_SSH_AGENT}:${DRUDE_ITAG}" ssh-add "$@"
+	$winpty_cmd docker run --rm -it --volumes-from=ssh-agent -v "$ssh_path:/.ssh" "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add "$ssh_arg"
  	return $?
 }
 
