@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DSH_VERSION=1.20.6
+DSH_VERSION=1.20.7
 
 # Console colors
 red='\033[0;91m'
@@ -805,17 +805,17 @@ ssh_add () {
 
 		case "$1" in
 			"")
-				if docker exec -it ssh-agent ssh-add -l > /dev/null; then
+				if docker exec ssh-agent ssh-add -l > /dev/null; then
 					return; # Some key is present
 				fi
 				;;
 			-D) 
-				docker run --rm --volumes-from=ssh-agent -it "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add -D
+				docker run --rm --volumes-from=ssh-agent "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add -D
 				return $?
 				;;
 			-l) 
 				# We do a sed hack here to strip out '/root/.ssh' from the key path in the output from ssh-add, since this path may confuse people.
-				docker run --rm --volumes-from=ssh-agent -it "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add -l 2>&1 | sed 's/\/root\/.ssh\///g'
+				docker run --rm --volumes-from=ssh-agent "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add -l 2>&1 | sed 's/\/root\/.ssh\///g'
 				return $?
 				;;
 			*) 
@@ -829,11 +829,11 @@ ssh_add () {
 				;;
 		esac
 		
+		is_windows && check_binary_found 'winpty' && winpty_cmd='winpty'
 		echo "Press ENTER or CTRL+C to skip entering passphrase."
 		# $ssh_path is mounted as /root/.ssh in the ssh-agent containers.
 		# When $key_path is empty, ssh-agent will be looking for both id_rsa and id_dsa in the home directory.
-		# We do a sed hack here to strip out '/root/.ssh' from the key path in the output from ssh-add, since this path may confuse people.
-		docker run --rm --volumes-from=ssh-agent -it -v "$ssh_path:/root/.ssh" "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add "$key_path" 2>&1 | sed 's/\/root\/.ssh\///g'
+		${winpty_cmd} docker run --rm --volumes-from=ssh-agent -it -v "$ssh_path:/root/.ssh" "blinkreaction/ssh-agent:${DRUDE_ITAG}" ssh-add "$key_path"
 	fi
 }
 
