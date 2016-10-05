@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DSH_VERSION=1.20.5
+DSH_VERSION=1.20.7
 
 # Console colors
 red='\033[0;91m'
@@ -1224,7 +1224,7 @@ check_for_updates ()
 _bash ()
 {
 	# Interactive shell requires a tty.
-	# On Windows we assume we run interactively via winpty (console.exe).
+	# On Windows we assume we run interactively via winpty.
 	if ! is_tty; then
 		echo "Interactive bash console in a non-interactive enveronment!? Nope, won't happen."
 		return 1
@@ -1247,10 +1247,8 @@ _run ()
 	local winpty_cmd
 	# Running docker exec interactively on Windows requires workarounds
 	if is_windows; then
-		# Workaround - run docker exec via winpty (console.exe) to get a tty console in cygwin.
-		if is_binary_found 'console'; then
-			winpty_cmd='console'
-		elif is_binary_found 'winpty'; then
+		# Workaround - run docker exec via winpty to get a tty console in cygwin.
+		if is_binary_found 'winpty'; then
 			winpty_cmd='winpty'
 		else
 			echo-red 'Winpty binary is missing.'
