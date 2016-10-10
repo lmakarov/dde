@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.5.0 (2016-10-10)
+
+IMPORTANT: Please run `dsh update images` after updating to this release.
+
+- Refactored ssh-add and fixed issues on Windows
+- Bats tests for Drude
+- Fixes for installation on Ubuntu
+- Use standard docker.sock location with vhost-proxy service
+- Removed references to `console.exe` (old winpty version) on Windows - this fixes `dsh bash` on older installations 
+- Docs
+  - Added Sass docs
+  - Added blackfire.io docs
+  - Updated mailhog docs (now with a permanent approach)
+  - Updated xdebug docs (using xdebug with console scripts, e.g. drush)
+  - Updated Behat docs (additional info about Behat configuration)
+  - Moved license to a separate file
+  - Retirement announcement
+
+
 ## 1.4.1 (2016-07-01)
 
 - Hotfixes
