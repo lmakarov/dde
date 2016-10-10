@@ -8,9 +8,10 @@ Required dsh version: `1.20.0+`
 # Setup
 
 1. Make sure dsh version is `1.20.0` or higher.
-2. `dsh reset ssh-agent` (only necessary when updating from older versions) 
-3. Add the following configuration option to the `cli` service in your projects `docker-compose.yml` file
+2. `dsh reset ssh-agent` (only necessary when updating from older versions).
+3. Add the following configuration option to the `cli` service in your projects `docker-compose.yml` file:
 
+    For Compose file format version 1
     ```yml
     cli:
       ...
@@ -18,5 +19,14 @@ Required dsh version: `1.20.0+`
         - ssh-agent
       ...
     ```
-4. Update container configuration with `dsh up`
+
+    For Compose file format version 2
+    ```yml
+    cli:
+      ...
+      volumes_from:
+        - container:ssh-agent
+      ...
+    ```
+4. Reset the cli container `dsh reset cli`.
 5. See `dsh help ssh-agent` for more usage information.
