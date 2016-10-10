@@ -2,6 +2,14 @@
 
 Docker and Docker Compose based environment for Drupal.
 
+    ------------------------- IMPORTANT ANNOUNCEMENT -------------------------
+
+This project is being retired and replaced with a new one: [Docksal](https://github.com/docksal/docksal).  
+Existing users are advised to switch to Docksal.
+
+    --------------------------------------------------------------------------
+
+
 **For a fully working example of Drude setup take a look at:**
 - [Drupal 7 sample project](https://github.com/blinkreaction/drude-d7-testing)
 - [Drupal 8 sample project](https://github.com/blinkreaction/drude-d8-testing)
@@ -85,45 +93,23 @@ Tools available inside the **cli** container:
 - [Drupal settings](/docs/drupal-settings.md)
 - [Overriding default PHP/MySQL/etc. settings](/docs/settings.md)
 - [Running multiple projects](/docs/multiple-projects.md)
-- [Public access](/docs/public-access.md)
 - [DB sandbox mode](/docs/db-sandbox.md)
 - [MySQL DB access for external tools](/docs/db-access.md)
-- [Debugging with Xdebug and PhpStorm](/docs/xdebug.md)
+- [Extending dsh with custom commands](/docs/custom-commands.md)
 
 ### Third party utililies
+- [Debugging with Xdebug and PhpStorm](/docs/xdebug.md)
+- [Using PHP Code Sniffer (phpcs, phpcbf)](/docs/phpcs.md)
+- [Using Blackfire profiler](/docs/blackfire.md)
+- [Public access via ngrok](/docs/public-access.md)
 - [Using Behat](/docs/behat.md)
 - [Sending and capturing e-mail](/docs/mail.md)
 - [Enabling Varnish support](/docs/varnish.md)
 - [Enabling Apache Solr support](/docs/apache-solr.md)
-- [Using PHP Code Sniffer (phpcs, phpcbf)](/docs/phpcs.md)
-- [Extending dsh with custom commands](/docs/custom-commands.md)
+- [Using Sass](/docs/sass.md)
+- [Using custom ssh keys (with or without passwords) via ssh-agent](/docs/ssh-agent.md)
 
 <a name="troubleshooting"></a>
 ## Troubleshooting
 
 See [Troubleshooting](/docs/troubleshooting.md) section of the docs.
-
-
-## License
-
-The MIT License (MIT)
-
-Copyright © 2016 Blink Reaction
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
