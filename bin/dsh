@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DSH_VERSION=1.21.0
+DSH_VERSION=1.21.1
 
 # Console colors
 red='\033[0;91m'
@@ -141,7 +141,8 @@ clean_string ()
 get_mysql_connect ()
 {
 	# Run drush forcing tty to false to avoid colored output string from drush.
-	echo "$(DRUDE_IS_TTY=0 _run drush sql-connect)"
+	cleaned_string=$(echo $(_run drush sql-connect) | sed -e 's/[^a-zA-Z0-9_-]$//')
+	echo "$cleaned_string"
 }
 
 # Use this function for every docker-compose invocation.
