@@ -141,8 +141,10 @@ clean_string ()
 get_mysql_connect ()
 {
 	# Run drush forcing tty to false to avoid colored output string from drush.
-	cleaned_string=$(echo $(_run drush sql-connect) | sed -e 's/[^a-zA-Z0-9_-]$//')
-	echo "$cleaned_string"
+	# Removes invisible residue from the connection string that remains
+	#leftover in Babun+docker-compose sometimes.
+	connection_string=$(echo $(DRUDE_IS_TTY=0 _run drush sql-connect) | sed -e 's/[^a-zA-Z0-9_-]$//')
+	echo ${connection_string}
 }
 
 # Use this function for every docker-compose invocation.
