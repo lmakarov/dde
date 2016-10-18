@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1 (2016-10-17)
+
+- Fix dsh mysql commands 
+
+
 ## 1.5.0 (2016-10-10)
 
 IMPORTANT: Please run `dsh update images` after updating to this release.
