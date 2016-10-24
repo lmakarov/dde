@@ -1,4 +1,4 @@
-# Debugging with Drude, Xdebug and PhpStorm
+# Debugging with DDE, Xdebug and PhpStorm
 
 `xdebug` extension is disabled by default as it causes about 20% performance hit.
 

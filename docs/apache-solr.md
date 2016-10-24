@@ -1,6 +1,6 @@
 # Enabling Apache Solr service
 
-## Drude configuration
+## DDE configuration
 
 1. Add Apache Solr service to `docker-compose.yml`:
 

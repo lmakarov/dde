@@ -1,11 +1,11 @@
-# Drude environment setup
+# DDE environment setup
 
 **This is a one time setup.**  
-Once you have a working Drude environment in place, you can use it for all Drude powered projects.
+Once you have a working DDE environment in place, you can use it for all DDE powered projects.
 
 ## Directory structure
 
-Drude expects a particular [directory structure](/docs/directory-structure.md).  
+DDE expects a particular [directory structure](/docs/directory-structure.md).  
 Please review it before proceeding with the setup.
 
 ## Windows only
@@ -19,7 +19,7 @@ Babun should be installed and run **as a regular user (do not use admin command 
 
 ## Setup
 
-1. Install `dsh` (Drude Shell)
+1. Install `dsh` (DDE Shell)
 
     ```
     sudo curl -L https://raw.githubusercontent.com/blinkreaction/drude/master/bin/dsh  -o /usr/local/bin/dsh
@@ -42,7 +42,7 @@ Babun should be installed and run **as a regular user (do not use admin command 
     cd /c/projects
     ```
 
-3. Install Drude's prerequisites
+3. Install DDE's prerequisites
 
     Mac and Windows: virtualbox, vagrant, boot2docker-vagrant  
     Linux: docker, docker-compose

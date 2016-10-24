@@ -1,4 +1,4 @@
-# Drude (**Dru**pal **D**ocker **E**nvironment)
+# DDE (**D**rupal **D**ocker **E**nvironment)
 
 Docker and Docker Compose based environment for Drupal.
 
@@ -10,7 +10,7 @@ Existing users are advised to switch to Docksal.
     --------------------------------------------------------------------------
 
 
-**For a fully working example of Drude setup take a look at:**
+**For a fully working example of DDE setup take a look at:**
 - [Drupal 7 sample project](https://github.com/blinkreaction/drude-d7-testing)
 - [Drupal 8 sample project](https://github.com/blinkreaction/drude-d8-testing)
 
@@ -23,11 +23,11 @@ Please review [system requirements](/docs/system-requirements.md) before proceed
 <a name="setup"></a>
 ## Setup
 
-1. [Drude environment setup](/docs/drude-env-setup.md)
+1. [DDE environment setup](/docs/dde-env-setup.md)
     
     This is done **one time per host** and should be performed by everyone.
 
-2. [Configure a project to use Drude](/docs/drude-project-setup.md)
+2. [Configure a project to use DDE](/docs/dde-project-setup.md)
 
     This is done **one time per project** and should be performed by the project TL.
 
@@ -56,9 +56,9 @@ dsh init
 
 
 <a name="dsh"></a>
-## Drude Shell Helper (dsh)
+## DDE Shell Helper (dsh)
 
-Drude shell helper is a console tool that simplifies day-to-day work with Drude.
+DDE shell helper is a console tool that simplifies day-to-day work with DDE.
 It provides a set of most commonly used commands and operations for controlling the Boot2docker VM, containers, running drush or other commands inside the **cli** container. (**Note**: dsh requires cli container to function properly)
 
 See `dsh help` for a complete list.

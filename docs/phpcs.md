@@ -1,4 +1,4 @@
-# Using PHP Code Sniffer with Drude
+# Using PHP Code Sniffer with DDE
 
 phpcs and phpcbf are readily available in up-to-date version of cli container.
 

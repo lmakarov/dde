@@ -2,7 +2,7 @@
 
 ## Expected folder structure
 
-Drude expects your Behat tests to be in `tests/behat` folder of the project repo.
+DDE expects your Behat tests to be in `tests/behat` folder of the project repo.
 
 >     tests/behat
 >       \_ bin/behat
@@ -18,11 +18,11 @@ Assuming you are using [Behat Drupal Extension](https://github.com/jhedstrom/dru
 
 ```yml
 # Docker profile.
-# For use inside the CLI container in Drude.
+# For use inside the CLI container in DDE.
 docker:
   extensions:
     Behat\MinkExtension:
-      # URL of the site when accessed inside Drude.
+      # URL of the site when accessed inside DDE.
       base_url: http://hello-world.drude
       selenium2:
         wd_host: http://browser.hello-world.docker:4444/wd/hub
@@ -30,14 +30,14 @@ docker:
       browser_name: chrome
     Drupal\DrupalExtension:
       drupal:
-        # Site docroot inside Drude.
+        # Site docroot inside DDE.
         drupal_root: /var/www/docroot
       drush:
-        # Site docroot inside Drude.
+        # Site docroot inside DDE.
         root: /var/www/docroot
 ```
 
-This will configure Behat for use with Drude.
+This will configure Behat for use with DDE.
 
 **Important note**
 
@@ -47,7 +47,7 @@ in the web container definition and `DOMAIN_NAME` in the browser container defin
 
 ## Running tests
 
-Tests can be launched with `dsh` (Drude Shell):
+Tests can be launched with `dsh` (DDE Shell):
 
     dsh behat
 
@@ -88,11 +88,11 @@ Example:
 
 ```yml
 # Docker profile.
-# For use inside the CLI container in Drude.
+# For use inside the CLI container in DDE.
 docker:
   extensions:
     Behat\MinkExtension:
-      # URL of the site when accessed inside Drude.
+      # URL of the site when accessed inside DDE.
       base_url: http://drupal7.drude
       selenium2:
         wd_host: http://drude3-d7-testing.browser.docker:4444/wd/hub
@@ -100,10 +100,10 @@ docker:
       browser_name: chrome
     Drupal\DrupalExtension:
       drupal:
-        # Site docroot inside Drude.
+        # Site docroot inside DDE.
         drupal_root: /var/www/docroot
       drush:
-        # Site docroot inside Drude.
+        # Site docroot inside DDE.
         root: /var/www/docroot
 ```
 
@@ -236,7 +236,7 @@ On this step you can see an error:
 
 In this case check Drupal `settings.php`. Please don't use variables for DB settings:
 ```PHP
-# Drude DB connection settings.
+# DDE DB connection settings.
 $databases['default']['default'] = array (
   'database' => getenv('DB_1_ENV_MYSQL_DATABASE'),
   'username' => getenv('DB_1_ENV_MYSQL_USER'),
@@ -249,7 +249,7 @@ $databases['default']['default'] = array (
 Use only values - something like this:
 
 ```PHP
-# Drude DB connection settings.
+# DDE DB connection settings.
 $databases['default']['default'] = array (
   'database' => 'drupal',
   'username' => 'drupal',
@@ -288,7 +288,7 @@ default:
 ...
 ```
 
-`192.168.10.1` is your machine's IP in Drude subnet.
+`192.168.10.1` is your machine's IP in DDE subnet.
 
 If you use host selinium driver, please don't use selenium2 node - check and comment `browser` container config in your docker-compose.yml file:
 
