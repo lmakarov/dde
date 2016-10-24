@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0 (2016-10-24)
+
+- Drude is now DDE (Drupal Development Environment)
+- DDE is retired in favor of [Docksal](https://github.com/docksal/docksal)
+
+
 ## 1.5.1 (2016-10-17)
 
 - Fix dsh mysql commands 

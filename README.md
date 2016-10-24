@@ -4,8 +4,9 @@ Docker and Docker Compose based environment for Drupal.
 
     ------------------------- IMPORTANT ANNOUNCEMENT -------------------------
 
-This project is being retired and replaced with a new one: [Docksal](https://github.com/docksal/docksal).  
-Existing users are advised to switch to Docksal.
+As of October 24th 2016 this project is retired.  
+Existing users may continue using it as-is and are advised to switch to [Docksal](https://github.com/docksal/docksal).  
+Docksal has lots of improvements, new features and less complex setup (no more Vagrant involved).
 
     --------------------------------------------------------------------------
 
