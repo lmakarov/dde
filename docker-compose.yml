@@ -36,6 +36,8 @@ db:
   volumes:
      # MySQL configuration overrides
      - "./.drude/etc/mysql/my.cnf:/etc/mysql/conf.d/z_my.cnf"
+     # Uncomment the followinf line to keep the DB, even if the container is destroyed.
+     #- "./db:/var/lib/mysql"
 
 # CLI node
 # Used for all console commands and tools.
