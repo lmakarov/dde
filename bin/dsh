@@ -26,6 +26,7 @@ DRUDE_COMMANDS_PATH=".drude/commands"
 # Network settings
 DRUDE_IP="192.168.10.10"
 DRUDE_SUBNET="192.168.10.1/24"
+DRUDE_SUBNET_RHEL="192.168.10.1"
 DRUDE_DEFAULT_DNS="8.8.8.8"
 DRUDE_VBOX_DNS="10.0.2.3"
 
@@ -850,7 +851,7 @@ install_prerequisites ()
 		bash <(echo "$presetup_script")
 		read -p "Press enter after the installation in another console window is done..."
 	elif is_linux ; then
-		install_ubuntu
+		install_linux
 	else # mac
 		local presetup_script
 		presetup_script=$(curl -fsS https://raw.githubusercontent.com/blinkreaction/boot2docker-vagrant/$B2D_BRANCH/scripts/presetup-mac.sh)
@@ -893,21 +894,95 @@ install_sshagent_service ()
 		"blinkreaction/ssh-agent:${DRUDE_ITAG}" >/dev/null 2>&1
 }
 
+install_subnet_debian ()
+{
+		# Make sure we don't do this twice
+	if ! grep -q $DRUDE_SUBNET /etc/network/interfaces; then
+		cat > /tmp/drude.ip.addr <<EOF
+	up   ip addr add $DRUDE_SUBNET dev lo label lo:drude
+	down ip addr del $DRUDE_SUBNET dev lo label lo:drude
+EOF
+		sudo sed -i '/iface lo inet loopback/r /tmp/drude.ip.addr' /etc/network/interfaces
+		rm -f /tmp/drude.ip.addr
+		sudo ifdown lo && sudo ifup lo
+	fi
+}
+
+install_subnet_rhel ()
+{
+		# Make sure we don't do this twice
+	interface="/etc/sysconfig/network-scripts/ifcfg-lo:drude"
+	# Make sure we don't do this twice.
+	if [ ! -f $interface ]; then
+		sudo touch $interface
+		sudo chmod 0777 $interface
+		cat > /tmp/drude.lo.interface << EOF
+DEVICE=lo:drude
+NAME=lo:drude
+NM_CONTROLLED=yes
+TYPE=Loopback
+IPADDR=$DRUDE_SUBNET_RHEL
+NETMASK=255.255.255.0
+ONBOOT=yes
+EOF
+		sudo cp /tmp/drude.lo.interface $interface
+		sudo chmod 0655 $interface
+		rm -r /tmp/drude.lo.interface
+		sudo ifdown lo:drude && sudo ifup lo:drude
+	fi
+}
+
+create_rhel_network_dispatcher_script ()
+{
+	dispatcher="/etc/NetworkManager/dispatcher.d/lo:drude-up"
+	# Make sure this is not done twice
+	if [ ! -f $dispatcher ]; then
+		sudo touch $dispatcher
+		sudo chmod 0777 $dispatcher
+		cat > /tmp/drude.dispatcher << EOF
+grep -q -F $DRUDE_SUBNET_RHEL /etc/resolv.conf || echo "nameserver $DRUDE_SUBNET_RHEL" | tee -a /etc/resolv.conf
+EOF
+		sudo cp /tmp/drude.dispatcher $dispatcher
+		sudo chmod 0655 $dispatcher
+		rm -r /tmp/drude.dispatcher
+		sudo systemctl restart NetworkManager.service
+	fi
+}
+
+is_redhat()
+{
+	if [[ -r /etc/redhat-release || -r /etc/gentoo-release || -r /etc/gentoo-release ]]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 # Install Docker and setup Drude on Ubuntu 14.04+
-install_ubuntu ()
+install_linux ()
 {
 	if [ -r /etc/lsb-release ]; then
 		lsb_dist="$(. /etc/lsb-release && echo "$DISTRIB_ID")"
 		lsb_release="$(. /etc/lsb-release && echo "$DISTRIB_RELEASE")"
 	fi
 
-	if [[ $lsb_dist != 'Ubuntu' || $(ver_to_int $lsb_release) < $(ver_to_int '14.04') ]]; then
+	if [[ $lsb_dist == 'Ubuntu' && $(ver_to_int $lsb_release) < $(ver_to_int '14.04') ]]; then
 		echo-red "dsh: prerequisites installation is currently supported only on Ubuntu 14.04+"
 		if is_tty; then
 			echo-yellow "You can continue at your own risk, if you know your Linux distribution is compatible with Ubuntu 14.04+"
 			_confirm "Are you sure you want to continue?"
 		else
 			exit 1
+		fi
+	else
+		if is_redhat; then
+			echo-red "dsh: prerequisites installation for RHEL Family is tested on Fedora (22, 23), RHEL (6.8, 7.2), CentOS(7)"
+			if is_tty; then
+				echo-yellow "You can continue at your own risk, if you know your Linux distribution is compatible with previously declared distributions"
+				_confirm "Are you sure you want to continue?"
+			else
+				exit 1
+			fi
 		fi
 	fi
 
@@ -930,17 +1005,13 @@ install_ubuntu ()
 	if_failed "Docker Compose installation/upgrade has failed."
 
 	echo-green "Adding a subnet for Drude..."
-	# Make sure we don't do this twice
-	if ! grep -q $DRUDE_SUBNET /etc/network/interfaces; then
-		cat > /tmp/drude.ip.addr <<EOF
-	up   ip addr add $DRUDE_SUBNET dev lo label lo:drude
-	down ip addr del $DRUDE_SUBNET dev lo label lo:drude
-EOF
-		sudo sed -i '/iface lo inet loopback/r /tmp/drude.ip.addr' /etc/network/interfaces
-		rm -f /tmp/drude.ip.addr
-		sudo ifdown lo && sudo ifup lo
-		if_failed "Docker subnet configuration failed failed."
+	if is_redhat; then
+		install_subnet_rhel
+	else
+		install_subnet_debian
 	fi
+	if_failed "Docker subnet configuration failed."
+
 
 	echo-green "Creating Drude HTTP/HTTPS reverse proxy..."
 	install_proxy_service
@@ -954,9 +1025,15 @@ EOF
 	install_sshagent_service
 	if_failed "Drude ssh-agent service setup failed."
 
-	echo-green "Configuring host DNS resolver for .drude domain..."
-	echo -e "\n# .drude domain resolution\nnameserver $DRUDE_IP" | sudo tee -a  /etc/resolvconf/resolv.conf.d/head
-	sudo resolvconf -u
+	if ! is_redhat; then
+		echo-green "Configuring host DNS resolver for .drude domain..."
+		echo -e "\n# .drude domain resolution\nnameserver $DRUDE_IP" | sudo tee -a  /etc/resolvconf/resolv.conf.d/head
+		sudo resolvconf -u
+	else
+		echo-green "Configuring host DNS resolver for .drude domain..."
+		create_rhel_network_dispatcher_script
+		if_failed "DNS resolver configuration failed."
+	fi
 
 	echo-green "To run docker without sudo please re-login or run 'newgrp docker' now."
 }
