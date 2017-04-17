@@ -37,7 +37,15 @@ Please review [system requirements](/docs/system-requirements.md) before proceed
 <a name="updates"></a>
 ## Updates
 
-Switch to your `<projects>` folder and run:
+Switch to your `<projects>` folder.
+
+If Drude is running, run:
+
+```
+dsh halt
+```
+
+To update, run:
 
 ```
 dsh self-update
