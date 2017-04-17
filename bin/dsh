@@ -1033,6 +1033,15 @@ install_autocomplete ()
 # Install everything: prerequisites, boot2docker and drude config
 install ()
 {
+	# Check if projects folder isn't under .babun folder.
+	if is_windows; then
+		abs_path=$(cygpath -am .)
+		if [[ $abs_path == *".babun"* ]]; then
+			echo-red "Your <projects> folder is under .babun folder. It will cause a problem. Please move your <projects> folder. For example you can move it to /cygdrive/c (disk C:)"
+			return 1
+		fi
+	fi
+
 	if [[ "$1" == "prerequisites" ]]; then
 		install_prerequisites
 	elif [[ "$1" == "boot2docker" ]]; then
